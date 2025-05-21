@@ -1,0 +1,70 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+        Schema::table('brands', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+        Schema::table('order_items', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->foreignId('company_id')->default(1)->constrained();
+        });
+
+    }
+
+    public function down(): void
+    {
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+        Schema::table('brands', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+        Schema::table('order_items', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
+
+    }
+};

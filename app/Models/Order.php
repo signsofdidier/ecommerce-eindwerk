@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -19,6 +20,7 @@ class Order extends Model
         'shipping_amount',
         'shipping_method',
         'notes',
+        'company_id',
     ];
 
     public function user(){
@@ -31,5 +33,11 @@ class Order extends Model
 
     public function address(){
         return $this->hasOne(Address::class);
+    }
+
+    // tenant relatie
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
@@ -21,6 +22,7 @@ class Product extends Model
         'on_sale',
         'category_id',
         'brand_id',
+        'company_id',
     ];
 
     // hierdoor worden de images omgezet naar een array uit de JSON van images
@@ -38,5 +40,11 @@ class Product extends Model
 
     public function orderItems(){
         return $this->hasMany(OrderItem::class);
+    }
+
+    // tenant relatie
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }
