@@ -24,12 +24,21 @@ class CheckoutPage extends Component
     public $zip_code;
     public $payment_method;
 
-    // als de cart leeg is mag je niet je geen toegang hebben tot de checkout page en keer je terug naar products.
+    public $current_company;
+
+    // als de cart leeg is mag je geen toegang hebben tot de checkout page en keer je terug naar products.
     public function mount(){
         $cart_items = CartManagement::getCartItemsFromSession();
         if(count($cart_items) == 0){
             return redirect('/products');
         }
+
+        // Voeg tenant validatie toe voor cart items
+        $this->current_company = app()->has('current_company') ? app()->make('current_company') : null;
+
+        CartManagement::validateCartItems();
+
+
     }
 
     public function placeOrder(){
@@ -92,8 +101,10 @@ class CheckoutPage extends Component
                 'customer_email' => auth()->user()->email,
                 'line_items' => $line_items,
                 'mode' => 'payment',
-                'success_url' => route('success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('cancel'),
+                // TENANT SUCCESS EN CANCEL
+                'success_url' => tenant_route('success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => tenant_route('cancel'),
+
             ]);
 
             $redirect_url = $sessionCheckout->url;

@@ -41,7 +41,9 @@ class OrderPlaced extends Mailable
         return new Content(
             markdown: 'mail.orders.placed',
             with: [
-                'url' => route('my-orders.show', $this->order)
+                // TENANT
+                'url' => tenant_route('my-orders.show', ['company' => $this->order->company->slug, 'order_id' => $this->order->id])
+
             ]
         );
     }

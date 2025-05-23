@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <section class="flex items-center font-poppins dark:bg-gray-800 ">
         <div class="justify-center flex-1 max-w-6xl px-4 py-4 mx-auto bg-white border rounded-md dark:border-gray-900 dark:bg-gray-900 md:py-10 md:px-10">
@@ -90,10 +95,10 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-start gap-4 px-4 mt-6 ">
-                    <a href="/products" class="w-full text-center px-4 py-2 text-blue-500 border border-blue-500 rounded-md md:w-auto hover:text-white hover:bg-blue-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
+                    <a href="{{ tenant_route('products') }}" class="w-full text-center px-4 py-2 text-blue-500 border border-blue-500 rounded-md md:w-auto hover:text-white hover:bg-blue-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
                         Go back shopping
                     </a>
-                    <a href="/my-orders" class="w-full text-center px-4 py-2 bg-blue-500 rounded-md text-gray-50 md:w-auto dark:text-gray-300 hover:bg-blue-600 dark:hover:bg-gray-700 dark:bg-gray-800">
+                    <a href="{{ tenant_route('my-orders') }}" class="w-full text-center px-4 py-2 bg-blue-500 rounded-md text-gray-50 md:w-auto dark:text-gray-300 hover:bg-blue-600 dark:hover:bg-gray-700 dark:bg-gray-800">
                         View My Orders
                     </a>
                 </div>

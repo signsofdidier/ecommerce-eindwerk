@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <div class="container mx-auto px-4">
         <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>
@@ -85,9 +90,9 @@
                     </div>
 
                     @if($cart_items)
-                        <a href="/checkout" class="bg-blue-500 block text-white text-center py-2 px-4 rounded-lg mt-4 w-full">Checkout</a>
+                        <a href="{{ tenant_route('checkout') }}" class="bg-blue-500 block text-white text-center py-2 px-4 rounded-lg mt-4 w-full">Checkout</a>
                     @else
-                        <a href="/checkout" class="bg-gray-300 block text-white text-center py-2 px-4 rounded-lg mt-4 w-full" disabled>Checkout</a>
+                        <a href="{{ tenant_route('checkout') }}" class="bg-gray-300 block text-white text-center py-2 px-4 rounded-lg mt-4 w-full" disabled>Checkout</a>
                     @endif
                 </div>
             </div>

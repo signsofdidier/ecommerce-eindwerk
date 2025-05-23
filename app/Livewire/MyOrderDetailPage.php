@@ -12,19 +12,35 @@ use Livewire\Component;
 class MyOrderDetailPage extends Component
 {
     public $order_id;
+    public $current_company;
 
     public function mount($order_id){
+        $this->current_company = app()->has('current_company') ? app()->make('current_company') : null;
         $this->order_id = $order_id;
+
     }
 
     public function render()
     {
-        // dit zal je order items ophalen
-        $order_items = OrderItem::with('product')->where('order_id', $this->order_id)->get();
-        $address = Address::where('order_id', $this->order_id)->first();
-        $order = Order::where('id', $this->order_id)->first();
+        // TENANT toevoegen
+        $order = Order::where('id', $this->order_id)
+            ->where('user_id', auth()->id())
+            ->when($this->current_company, function ($query) {
+                $query->where('company_id', $this->current_company->id);
+            })
+            ->firstOrFail();
 
-        // toon de order items, address en de order in de view
+        $order_items = OrderItem::with(['product' => function($query) {
+            $company = app()->make('current_company');
+            $query->where('company_id', $company->id);
+        }])
+            ->where('order_id', $this->order_id)
+            ->where('company_id', $this->current_company->id) // <--- BELANGRIJK!
+            ->get();
+
+
+        $address = Address::where('order_id', $this->order_id)->first();
+
         return view('livewire.my-order-detail-page', [
             'order_items' => $order_items,
             'address' => $address,

@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <section class="py-10 bg-gray-50 font-poppins dark:bg-gray-800 rounded-lg">
         <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
@@ -83,7 +88,7 @@
                             <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3" wire:key="{{ $product->id }}">
                                 <div class="border border-gray-300 dark:border-gray-700">
                                     <div class="relative bg-gray-200">
-                                        <a href="/products/{{ $product->slug }}" class="">
+                                        <a href="{{ tenant_route('products') . '/' . $product->slug }}" class="">
                                             <img src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}" class="object-cover w-full h-56 mx-auto ">
                                         </a>
                                     </div>

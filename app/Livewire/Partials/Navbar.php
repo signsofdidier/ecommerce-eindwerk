@@ -10,8 +10,12 @@ class Navbar extends Component
 {
 
     public $total_count = 0;
+    public $company;
 
     public function mount(){
+
+        $this->company = request()->route('company');
+
         // telt alle items in de cart op maar ook de quantity van een item
         $this->total_count = array_sum(array_column(CartManagement::getCartItemsFromSession(), 'quantity'));
 

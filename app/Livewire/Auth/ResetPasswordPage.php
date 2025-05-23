@@ -26,6 +26,8 @@ class ResetPasswordPage extends Component
     public $password;
     public $password_confirmation;
 
+    public $company;
+
     /**
      * De mount-methode wordt automatisch aangeroepen wanneer het component geladen wordt.
      * Hier initialiseren we de token die via de route wordt doorgegeven.
@@ -33,6 +35,7 @@ class ResetPasswordPage extends Component
     public function mount($token)
     {
         $this->token = $token;
+        $this->company = request()->route('company');
     }
 
     /**
@@ -83,7 +86,7 @@ class ResetPasswordPage extends Component
         if ($status === Password::PASSWORD_RESET) {
             // Succesvol: geef feedback en stuur gebruiker naar loginpagina
             session()->flash('status', 'Password reset successfully. You can now log in.');
-            return redirect()->to('/login');
+            return redirect()->to("/{$this->company}/login");
         } else {
             // Mislukt: toon een foutmelding bij het emailveld
             $this->addError('email', __($status));

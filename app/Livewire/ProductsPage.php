@@ -59,8 +59,16 @@ class ProductsPage extends Component
 
     public function render()
     {
+        // Haal de huidige company op (als die er is)
+        $company = app()->has('current_company') ? app()->make('current_company') : null;
+
         // Start een query om alleen actieve producten op te halen
         $productQuery = Product::query()->where('is_active', 1);
+
+        // Filter op tenant als er een company is ingesteld
+        if ($company) {
+            $productQuery->where('company_id', $company->id);
+        }
 
         // Filter de producten op basis van de geselecteerde categorieën, als er categorieën zijn geselecteerd
         if(!empty($this->selected_categories)) {
@@ -103,10 +111,23 @@ class ProductsPage extends Component
             $productQuery->orderBy('price', 'desc');
         }
 
+        // brands en categories query voor de filters
+        $brands = Brand::where('is_active', 1);
+        if ($company) {
+            $brands->where('company_id', $company->id);
+        }
+
+        // Categories query - gebruik dezelfde $categoriesQuery die je al had gemaakt
+        $categories = Category::where('is_active', 1);
+        if ($company) {
+            $categories->where('company_id', $company->id);
+        }
+
         return view('livewire.products-page', [
             'products' => $productQuery->paginate(6),
-            'brands' => Brand::where('is_active', 1)->get(['id', 'name', 'slug']),
-            'categories' => Category::where('is_active', 1)->get(['id', 'name', 'slug']),
+            'brands' => $brands->get(['id', 'name', 'slug']),
+            'categories' => $categories->get(['id', 'name', 'slug']),
+            'company' => $company,
         ]);
     }
 }

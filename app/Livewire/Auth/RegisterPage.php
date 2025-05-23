@@ -14,6 +14,12 @@ class RegisterPage extends Component
     public $name;
     public $email;
     public $password;
+    public $company;
+
+    public function mount()
+    {
+        $this->company = request()->route('company');
+    }
 
     // register user
     public function save(){
@@ -33,7 +39,10 @@ class RegisterPage extends Component
         auth()->login($user);
 
         // intended redirect naar de pagina waar je vandaan komt
-        return redirect()->intended();
+        return redirect()->to(tenant_route('home'));
+
+
+
     }
 
     public function render()

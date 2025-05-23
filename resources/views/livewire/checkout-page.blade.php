@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">
         Checkout

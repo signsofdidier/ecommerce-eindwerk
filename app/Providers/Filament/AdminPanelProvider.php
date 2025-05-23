@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->tenant(Company::class)
+            ->tenant(Company::class, ownershipRelationship: 'company')
             ->tenantMiddleware([
                 ApplyTenantScopes::class,
             ], isPersistent: true)

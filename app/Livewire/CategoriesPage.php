@@ -12,7 +12,14 @@ class CategoriesPage extends Component
 {
     public function render()
     {
-        $categories = Category::where('is_active', 1)->get();
+        // Haal de huidige company op (als die er is)
+        $company = app()->has('current_company') ? app()->make('current_company') : null;
+
+        $categories = Category::where('is_active', 1)
+            ->when($company, function($query) use ($company) {
+                $query->where('company_id', $company->id);
+            })
+            ->get();
 
         return view('livewire.categories-page', [
             'categories' => $categories

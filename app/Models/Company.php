@@ -9,6 +9,7 @@ class Company extends Model
 {
     protected $fillable = [
         'name',
+        'slug',
     ];
 
     public function users(): BelongsToMany

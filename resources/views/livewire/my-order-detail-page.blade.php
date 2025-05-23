@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 @php
         // kleuren voor de status van de order
         switch ($order->status) {

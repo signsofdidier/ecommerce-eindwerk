@@ -12,9 +12,23 @@ class MyOrdersPage extends Component
 {
     use WithPagination;
 
+    public $current_company;
+
+    public function mount()
+    {
+        $this->current_company = app()->has('current_company') ? app()->make('current_company') : null;
+    }
+
     public function render()
     {
-        $my_orders = Order::where('user_id', auth()->user()->id)->latest()->paginate(6);
+
+        $my_orders = Order::where('user_id', auth()->id())
+            ->when($this->current_company, function ($query) {
+                $query->where('company_id', $this->current_company->id);
+            })
+            ->latest()
+            ->paginate(6);
+
         return view('livewire.my-orders-page', [
             'orders' => $my_orders,
         ]);

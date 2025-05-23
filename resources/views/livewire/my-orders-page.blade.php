@@ -1,3 +1,8 @@
+{{-- detecteer de huidige tenant --}}
+@php
+    $company = app()->has('current_company') ? app()->make('current_company') : null;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <h1 class="text-4xl font-bold text-slate-500">My Orders</h1>
     <div class="flex flex-col bg-white p-5 rounded mt-4 shadow-lg">
@@ -70,7 +75,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{ Number::currency($order->grand_total, 'EUR') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                    <a href="/my-orders/{{ $order->id }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
+                                    <a href="{{ tenant_route('my-orders') . '/' .  $order->id }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
                                 </td>
                             </tr>
                         @endforeach

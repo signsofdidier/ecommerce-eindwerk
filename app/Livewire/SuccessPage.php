@@ -15,10 +15,29 @@ class SuccessPage extends Component
     #[Url] //neemt de url van de pagina en zet deze in public $session_id
     public $session_id;
 
+    public $current_company; // TENANT
+
+    public function mount()
+    {
+        // TENANT
+        $this->current_company = app()->has('current_company') ? app()->make('current_company') : null;
+    }
+
     public function render()
     {
+        // Haal de huidige company op (als die er is)
+        $company = app()->has('current_company') ? app()->make('current_company') : null;
+
         // haal de laatste bestelling op van de ingelogde user
-        $latest_order = Order::with('address')->where('user_id', auth()->user()->id)->latest()->first();
+        // TENANT toevoegen
+        $latest_order = Order::with('address')
+            ->where('user_id', auth()->id())
+            ->when(app()->has('current_company'), function ($query) {
+                $query->where('company_id', app()->make('current_company')->id);
+            })
+            ->latest()
+            ->firstOrFail();
+
 
         if($this->session_id){
             Stripe::setApiKey(env('STRIPE_SECRET'));

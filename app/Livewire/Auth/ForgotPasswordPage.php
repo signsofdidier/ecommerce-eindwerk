@@ -10,6 +10,13 @@ use Livewire\Component;
 class ForgotPasswordPage extends Component
 {
     public $email;
+    public $company;
+
+    public function mount()
+    {
+        $this->company = request()->route('company');
+    }
+
 
     public function save(){
         $this->validate([

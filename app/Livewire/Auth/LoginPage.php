@@ -10,6 +10,12 @@ class LoginPage extends Component
 {
     public $email;
     public $password;
+    public $company;
+
+    public function mount()
+    {
+        $this->company = request()->route('company');
+    }
 
     public function save(){
         $this->validate([
@@ -23,7 +29,8 @@ class LoginPage extends Component
             return;
         }
 
-        return redirect()->intended();
+        return redirect()->intended("/{$this->company}");
+
     }
 
     public function render()
