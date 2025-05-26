@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.10.1",
         "league/commonmark": "^2.7",
         "livewire/livewire": "^3.6",
+        "spatie/laravel-multitenancy": "^4.0",
         "stripe/stripe-php": "*"
     },
     "require-dev": {
