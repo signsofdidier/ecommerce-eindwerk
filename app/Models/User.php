@@ -74,6 +74,12 @@ class User extends Authenticatable implements FilamentUser
             ->withTimestamps();
     }
 
+    public function hasRole(string $role): bool
+    {
+        return $this->getRoleInCurrentCompanyAttribute() === $role;
+    }
+
+
     // Rollen in eigen company
     public function getRoleInCurrentCompanyAttribute()
     {

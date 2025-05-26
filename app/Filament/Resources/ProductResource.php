@@ -203,11 +203,28 @@ class ProductResource extends Resource
     }
 
     // TENANT
-    // Dit gaat ervan uit dat je als eigenaar (user) exact één company hebt.
+    // Wie wat kan zien op de tenant
     public static function getEloquentQuery(): Builder
     {
-        // Zorg dat je alleen de producten van de huidige company ziet
-        return parent::getEloquentQuery()->where('company_id', auth()->user()->companies()->first()->id ?? null);
+        $user = auth()->user();
+
+        // Superadmin ziet alles
+        if ($user->email === 'superadmin@gmail.com') {
+            return parent::getEloquentQuery();
+        }
+
+        // Gewone tenant user: beperk op eigen bedrijf
+        $company = $user->tenantCompanies()->first();
+
+        if (! $company) {
+            // Als er geen gekoppeld bedrijf is, toon niets
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
+        return parent::getEloquentQuery()
+            ->where('company_id', $company->id);
     }
+
+
 
 }

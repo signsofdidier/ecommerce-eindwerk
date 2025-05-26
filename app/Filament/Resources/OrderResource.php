@@ -280,4 +280,25 @@ class OrderResource extends Resource
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
+
+    // TENANT
+    // Wie wat kan zien op de tenant
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->email === 'superadmin@gmail.com') {
+            return parent::getEloquentQuery();
+        }
+
+        $company = $user->tenantCompanies()->first();
+
+        if (! $company) {
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
+        return parent::getEloquentQuery()
+            ->where('company_id', $company->id);
+    }
+
 }
