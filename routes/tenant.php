@@ -3,17 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return 'CENTRALE APP';
+    return 'Welkom bij tenant: ' . tenant('id');
 });
 
-// DIT is de tenantgroep:
-Route::middleware([
-    'web',
-    \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,
-])
-    ->prefix('{tenant}')
-    ->group(function () {
-        Route::get('/', function () {
-            return 'Welkom bij tenant: ' . tenant('id');
-        });
-    });
+
