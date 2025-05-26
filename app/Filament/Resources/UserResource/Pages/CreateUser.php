@@ -23,11 +23,12 @@ class CreateUser extends CreateRecord
 
         if ($company) {
             $company->users()->syncWithoutDetaching([
-                $user->id => ['role' => $data['role'] ?? 'viewer'],
+                $user->id => ['role' => $data['pivot_role'] ?? 'viewer'],
             ]);
         }
 
         return $user;
     }
+
 
 }

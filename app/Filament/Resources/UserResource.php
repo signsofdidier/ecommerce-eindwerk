@@ -50,19 +50,19 @@ class UserResource extends Resource
                 DateTimePicker::make('email_verified_at')
                 ->label('Email Verified At')
                 ->default(now()),
+
                 // Role select
-                Select::make('role')
-                    ->label('Role in Company')
+                Select::make('pivot_role')
+                    ->label('Rol in huidige bedrijf')
                     ->options([
-                        'admin' => 'Admin',
-                        'editor' => 'Editor',
                         'viewer' => 'Viewer',
+                        'editor' => 'Editor',
+                        'admin' => 'Admin',
                     ])
-                    ->default('viewer')
+                    ->default(fn (?User $record) => $record?->tenantCompanies->first()?->pivot?->role)
                     ->required()
-                    ->native(false)
-                    // Zo kun je je eigen rol niet aanpassen via het formulier.
-                    ->visible(fn () => Filament::auth()->user()?->id !== request()->route('record')),
+                    ->visible(fn () => auth()->user()->tenantCompanies()->exists()),
+
 
 
                 TextInput::make('password')
