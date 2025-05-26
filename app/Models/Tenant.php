@@ -6,12 +6,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant
 {
-    protected $fillable = [
-        'id',
-        'data',
-    ];
+    protected $fillable = ['id', 'data'];
 
-    protected $casts = [
-        'data' => 'array',
-    ];
+    protected $casts = ['data' => 'array'];
 }
