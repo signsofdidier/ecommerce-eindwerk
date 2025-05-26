@@ -20,6 +20,8 @@ class ProductsPage extends Component
     // moet worden gebruikt om de pagination te laten werken in livewire
     use WithPagination;
 
+    public $company;
+
     #[Url] // Deze eigenschap wordt gesynchroniseerd met de URL, zodat filters via de URL gedeeld kunnen worden
     public $selected_categories = []; // deze naam komt van de wire:model.live="selected_categories" uit products page
 
@@ -35,9 +37,16 @@ class ProductsPage extends Component
     #[Url]
     public $price_range = 0; // Zet dit op 0 zodat de filter niet actief blijft als je via bvb homepage categories filtert
 
+
     // sort by
     #[Url]
     public $sort = 'latest';
+
+    public function mount()
+    {
+        // dit haalt de huidige company op
+        $this->company = app('currentCompany');
+    }
 
     // add product to cart method
     public function addToCart($product_id){
@@ -59,8 +68,10 @@ class ProductsPage extends Component
 
     public function render()
     {
-        // Start een query om alleen actieve producten op te halen
-        $productQuery = Product::query()->where('is_active', 1);
+        // Start een query om alleen actieve producten op te halen uit de company
+        $productQuery = Product::query()
+            ->where('is_active', 1)
+            ->where('company_id', $this->company->id);
 
         // Filter de producten op basis van de geselecteerde categorieën, als er categorieën zijn geselecteerd
         if(!empty($this->selected_categories)) {

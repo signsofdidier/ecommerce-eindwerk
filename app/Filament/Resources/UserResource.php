@@ -113,4 +113,23 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        // Laat superadmin alles zien
+        if ($user->email === 'superadmin@gmail.com') {
+            return parent::getEloquentQuery();
+        }
+
+        // Voor gewone tenant users: alleen users van eigen company tonen
+        $company = $user->tenantCompanies()->first();
+
+        return parent::getEloquentQuery()
+            ->whereHas('tenantCompanies', function ($query) use ($company) {
+                $query->where('companies.id', $company->id);
+            });
+    }
+
 }

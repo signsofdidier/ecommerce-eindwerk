@@ -201,4 +201,13 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
+    // TENANT
+    // Dit gaat ervan uit dat je als eigenaar (user) exact één company hebt.
+    public static function getEloquentQuery(): Builder
+    {
+        // Zorg dat je alleen de producten van de huidige company ziet
+        return parent::getEloquentQuery()->where('company_id', auth()->user()->companies()->first()->id ?? null);
+    }
+
 }

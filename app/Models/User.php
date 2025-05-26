@@ -53,9 +53,24 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Order::class);
     }
 
-    // Alleen user met deze email (admin) kan in de admin panel (backend) inloggen
+    // Deze kunnen inloggen in de admin
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->email == "admin@gmail.com";
+        // Alleen als user is gekoppeld aan ten minste één company of als superadmin
+        return $this->email === 'superadmin@gmail.com'
+            || $this->tenantCompanies()->exists();
+    }
+
+
+    public function companies()
+    {
+        return $this->hasMany(Company::class, 'owner_id');
+    }
+
+    public function tenantCompanies()
+    {
+        return $this->belongsToMany(Company::class)
+            ->withPivot('role')
+            ->withTimestamps();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\setCurrentCompany;
 use App\Livewire\Auth\ForgotPasswordPage;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\RegisterPage;
@@ -14,6 +15,7 @@ use App\Livewire\MyOrdersPage;
 use App\Livewire\ProductDetailPage;
 use App\Livewire\ProductsPage;
 use App\Livewire\SuccessPage;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 // openbare routes voor alle users
@@ -43,4 +45,14 @@ Route::middleware('auth')->group(function() {
     Route::get('/my-orders/{order_id}', MyOrderDetailPage::class)->name('my-orders.show');
     Route::get('/success', SuccessPage::class)->name('success');
     Route::get('/cancel', CancelPage::class)->name('cancel');
+});
+
+// TENANT route
+Route::middleware('web')->group(function () {
+    Route::prefix('{companySlug}')
+        ->middleware(SetCurrentCompany::class)
+        ->group(function () {
+            Route::get('/', HomePage::class);
+            Route::get('/products', ProductsPage::class);
+        });
 });
