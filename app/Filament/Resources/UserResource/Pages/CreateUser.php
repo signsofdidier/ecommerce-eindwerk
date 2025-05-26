@@ -18,15 +18,16 @@ class CreateUser extends CreateRecord
             'password' => bcrypt($data['password']),
         ]);
 
-        $company = auth()->user()?->tenantCompanies()->first()
-            ?? auth()->user()?->companies()->first();
+        $company = auth()->user()->tenantCompanies()->first()
+            ?? auth()->user()->companies()->first();
 
         if ($company) {
             $company->users()->syncWithoutDetaching([
-                $user->id => ['role' => 'admin'],
+                $user->id => ['role' => $data['role'] ?? 'viewer'],
             ]);
         }
 
         return $user;
     }
+
 }

@@ -73,4 +73,22 @@ class User extends Authenticatable implements FilamentUser
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    // Rollen in eigen company
+    public function getRoleInCurrentCompanyAttribute()
+    {
+        // Haal de eerste gekoppelde tenant company op dit model op
+        $company = $this->tenantCompanies()->first();
+
+        if (!$company) {
+            return null;
+        }
+
+        // Zoek in de eerder geladen relatie of er een match is
+        return $this->tenantCompanies->firstWhere('id', $company->id)?->pivot?->role;
+    }
+
+
+
+
 }

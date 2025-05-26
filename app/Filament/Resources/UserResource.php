@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
@@ -48,6 +50,21 @@ class UserResource extends Resource
                 DateTimePicker::make('email_verified_at')
                 ->label('Email Verified At')
                 ->default(now()),
+                // Role select
+                Select::make('role')
+                    ->label('Role in Company')
+                    ->options([
+                        'admin' => 'Admin',
+                        'editor' => 'Editor',
+                        'viewer' => 'Viewer',
+                    ])
+                    ->default('viewer')
+                    ->required()
+                    ->native(false)
+                    // Zo kun je je eigen rol niet aanpassen via het formulier.
+                    ->visible(fn () => Filament::auth()->user()?->id !== request()->route('record')),
+
+
                 TextInput::make('password')
                     ->password()
                     // hashed het password
@@ -67,6 +84,10 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('email')
                 ->searchable(),
+                TextColumn::make('role_in_current_company')
+                    ->label('Role')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
@@ -129,7 +150,9 @@ class UserResource extends Resource
         return parent::getEloquentQuery()
             ->whereHas('tenantCompanies', function ($query) use ($company) {
                 $query->where('companies.id', $company->id);
-            });
+            })
+            ->with('tenantCompanies'); // <== voeg deze regel toe
+
     }
 
 }
