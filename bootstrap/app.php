@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\Filament\SuperAdminPanelProvider;
 use App\Providers\TenancyServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withProviders([
         TenancyServiceProvider::class,
+        SuperAdminPanelProvider::class,
     ])
     ->withMiddleware(function (Middleware $middleware) {
         //
