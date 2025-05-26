@@ -1,11 +1,17 @@
 <?php
 
-use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
+use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return 'CENTRALE APP';
+});
+
+// DIT is de tenantgroep:
 Route::middleware([
     'web',
-    InitializeTenancyByPath::class, // NIET tenancy of domain
+    \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,
 ])
+    ->prefix('{tenant}')
     ->group(function () {
         Route::get('/', function () {
             return 'Welkom bij tenant: ' . tenant('id');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Tenant;
 use Stancl\Tenancy\Database\Models\Domain;
+use Stancl\Tenancy\Resolvers\PathTenantResolver;
 
 return [
     'tenant_model' => Tenant::class,
@@ -14,7 +15,7 @@ return [
     'domain_model' => Domain::class,
 
     'tenant_identification' => [
-        Stancl\Tenancy\Resolvers\PathTenantResolver::class,
+        PathTenantResolver::class,
     ],
 
 

@@ -122,11 +122,17 @@ class TenancyServiceProvider extends ServiceProvider
     {
         $this->app->booted(function () {
             if (file_exists(base_path('routes/tenant.php'))) {
-                Route::namespace(static::$controllerNamespace)
+                \Illuminate\Support\Facades\Route::middleware([
+                    'web',
+                    \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,
+                ])
+                    ->prefix('{tenant}') // dit is essentieel bij PathTenantResolver
                     ->group(base_path('routes/tenant.php'));
             }
         });
     }
+
+
 
     protected function makeTenancyMiddlewareHighestPriority()
     {
