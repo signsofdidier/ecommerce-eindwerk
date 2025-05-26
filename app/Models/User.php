@@ -78,16 +78,22 @@ class User extends Authenticatable implements FilamentUser
     public function getRoleInCurrentCompanyAttribute()
     {
         // Haal de eerste gekoppelde tenant company op dit model op
-        $company = $this->tenantCompanies()->first();
-
-        if (!$company) {
-            return null;
-        }
+        $company = auth()->user()?->tenantCompanies()->first()
+            ?? auth()->user()?->companies()->first();
 
         // Zoek in de eerder geladen relatie of er een match is
-        return $this->tenantCompanies->firstWhere('id', $company->id)?->pivot?->role;
+        return $this->tenantCompanies
+            ->firstWhere('id', $company?->id)?->pivot?->role;
     }
 
+    public function getPivotRoleAttribute(): ?string
+    {
+        $company = auth()->user()->tenantCompanies()->first()
+            ?? auth()->user()->companies()->first();
+
+        return $this->tenantCompanies
+            ->firstWhere('id', $company?->id)?->pivot?->role;
+    }
 
 
 

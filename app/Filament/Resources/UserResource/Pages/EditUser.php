@@ -20,7 +20,8 @@ class EditUser extends EditRecord
 
     protected function afterSave(): void
     {
-        $company = auth()->user()->tenantCompanies()->first();
+        $company = auth()->user()->tenantCompanies()->first()
+            ?? auth()->user()->companies()->first();
 
         if ($company && isset($this->data['pivot_role'])) {
             $this->record->tenantCompanies()->updateExistingPivot(
@@ -29,6 +30,7 @@ class EditUser extends EditRecord
             );
         }
     }
+
 
     protected function getHeaderActions(): array
     {

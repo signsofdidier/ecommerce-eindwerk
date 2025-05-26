@@ -59,11 +59,18 @@ class UserResource extends Resource
                         'editor' => 'Editor',
                         'admin' => 'Admin',
                     ])
-                    ->default(fn (?User $record) => $record?->tenantCompanies->first()?->pivot?->role)
+                    ->default(function (?User $record) {
+                        $company = auth()->user()->tenantCompanies()->first()
+                            ?? auth()->user()->companies()->first();
+
+                        return $record?->tenantCompanies
+                            ->firstWhere('id', $company?->id)?->pivot?->role;
+                    })
                     ->required()
-                    ->visible(fn () => auth()->user()->tenantCompanies()->exists()),
-
-
+                    ->visible(function () {
+                        $authUser = auth()->user();
+                        return $authUser && ($authUser->tenantCompanies()->exists() || $authUser->companies()->exists());
+                    }),
 
                 TextInput::make('password')
                     ->password()
