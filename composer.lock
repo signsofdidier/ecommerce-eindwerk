@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3789432093ddd88469213741e40fe31",
+    "content-hash": "31c255d6376f2713cadb212959d9301d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4990,16 +4990,16 @@
         },
         {
             "name": "stancl/tenancy",
-            "version": "v3.9.1",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/tenancy.git",
-                "reference": "d98a170fbd2e114604bfec3bc6267a3d6e02dec1"
+                "reference": "e930251db5efabd88166b8d2559eac6ff8473cc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/d98a170fbd2e114604bfec3bc6267a3d6e02dec1",
-                "reference": "d98a170fbd2e114604bfec3bc6267a3d6e02dec1",
+                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/e930251db5efabd88166b8d2559eac6ff8473cc8",
+                "reference": "e930251db5efabd88166b8d2559eac6ff8473cc8",
                 "shasum": ""
             },
             "require": {
@@ -5057,7 +5057,7 @@
             ],
             "support": {
                 "issues": "https://github.com/archtechx/tenancy/issues",
-                "source": "https://github.com/archtechx/tenancy/tree/v3.9.1"
+                "source": "https://github.com/archtechx/tenancy/tree/v3.9.0"
             },
             "funding": [
                 {
@@ -5069,7 +5069,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-13T16:02:11+00:00"
+            "time": "2025-02-25T13:36:29+00:00"
         },
         {
             "name": "stancl/virtualcolumn",
