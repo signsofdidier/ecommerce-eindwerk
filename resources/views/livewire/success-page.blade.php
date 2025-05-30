@@ -10,6 +10,7 @@
                         <h1 class="fw-bold mb-3" style="color: #00234D;">Thank You!</h1>
                         <p class="mb-4 text-muted">Your order has been received and is now being processed. Below are your order details:</p>
 
+                        <!-- Order Number & Date -->
                         <div class="row mb-4">
                             <div class="col-6 text-start">
                                 <strong>Order Number:</strong>
@@ -21,6 +22,17 @@
                             </div>
                         </div>
 
+                        <!-- Transaction ID -->
+                        @if($transactionId)
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <strong>Transaction ID:</strong>
+                                    <div class="text-secondary">{{ $transactionId }}</div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Total & Payment Method -->
                         <div class="row mb-4">
                             <div class="col-6 text-start">
                                 <strong>Total:</strong>
@@ -32,6 +44,7 @@
                             </div>
                         </div>
 
+                        <!-- Shipping Address -->
                         <div class="card border bg-light mb-4">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold mb-3">Shipping Address</h5>
@@ -42,6 +55,7 @@
                             </div>
                         </div>
 
+                        <!-- Order Details -->
                         <div class="card border mb-4">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold mb-3">Order Details</h5>
@@ -61,6 +75,7 @@
                             </div>
                         </div>
 
+                        <!-- Action Buttons -->
                         <div class="d-flex justify-content-center gap-3">
                             <a href="{{ url('/products') }}" class="btn btn-outline-secondary px-4">Continue Shopping</a>
                             <a href="{{ url('/my-orders') }}" class="btn btn-primary px-4">View My Orders</a>

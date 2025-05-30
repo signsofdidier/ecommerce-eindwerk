@@ -9,8 +9,9 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Stripe\PromotionCode;
 
 #[Title('Checkout')]
 class CheckoutPage extends Component
@@ -23,109 +24,130 @@ class CheckoutPage extends Component
     public $state;
     public $zip_code;
     public $payment_method;
+    public $coupon_code;
 
-    // als de cart leeg is mag je niet je geen toegang hebben tot de checkout page en keer je terug naar products.
-    public function mount(){
+    public function mount()
+    {
         $cart_items = CartManagement::getCartItemsFromSession();
-        if(count($cart_items) == 0){
+        if (count($cart_items) === 0) {
             return redirect('/products');
         }
     }
 
-    public function placeOrder(){
-
+    public function placeOrder()
+    {
+        // 1) Validatie
         $this->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone' => 'required',
-            'street_address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'zip_code' => 'required',
-            'payment_method' => 'required',
+            'first_name'     => 'required|string',
+            'last_name'      => 'required|string',
+            'phone'          => 'required|string',
+            'street_address' => 'required|string',
+            'city'           => 'required|string',
+            'state'          => 'required|string',
+            'zip_code'       => 'required|string',
+            'payment_method' => 'required|in:stripe,cod',
+            'coupon_code'    => 'nullable|string',
         ]);
 
         $cart_items = CartManagement::getCartItemsFromSession();
-        $line_items = [];
 
-        foreach($cart_items as $item){
-            $line_items[] = [
-                'price_data' => [
-                    'currency' => 'eur',
-                    'unit_amount' => $item['unit_amount'] * 100,
-                    'product_data' => [
-                        'name' => $item['name'],
-                    ],
-                ],
-                'quantity' => $item['quantity'],
-            ];
-        }
+        // 2) Maak Order + Address
+        $order = Order::create([
+            'user_id'        => auth()->id(),
+            'grand_total'    => CartManagement::calculateGrandTotal($cart_items),
+            'payment_method' => $this->payment_method,
+            'payment_status' => 'pending',
+            'status'         => 'new',
+            'currency'       => 'EUR',
+            'shipping_amount'=> 0,
+            'shipping_method'=> 'none',
+            'notes'          => 'Order placed by ' . auth()->user()->name,
+        ]);
 
-        $order = new Order();
-        $order->user_id = auth()->user()->id;
-        $order->grand_total = CartManagement::calculateGrandTotal($cart_items);
-        $order->payment_method = $this->payment_method;
-        $order->payment_status = 'pending';
-        $order->status = 'new';
-        $order->currency = 'EUR';
-        $order->shipping_amount = 0;
-        $order->shipping_method = 'none';
-        $order->notes = 'Order placed by ' . auth()->user()->name;
+        Address::create([
+            'order_id'      => $order->id,
+            'first_name'    => $this->first_name,
+            'last_name'     => $this->last_name,
+            'phone'         => $this->phone,
+            'street_address'=> $this->street_address,
+            'city'          => $this->city,
+            'state'         => $this->state,
+            'zip_code'      => $this->zip_code,
+        ]);
 
-        $address = new Address();
-        $address->first_name = $this->first_name;
-        $address->last_name = $this->last_name;
-        $address->phone = $this->phone;
-        $address->street_address = $this->street_address;
-        $address->city = $this->city;
-        $address->state = $this->state;
-        $address->zip_code = $this->zip_code;
-
-        $redirect_url = '';
-
-
-        // If else voert uit als je kiest tussen cod of stripe
-        if($this->payment_method == 'stripe'){
+        // 3) Betaalmethode afhandelen
+        if ($this->payment_method === 'stripe') {
             Stripe::setApiKey(env('STRIPE_SECRET'));
-            $sessionCheckout = Session::create([
-                'payment_method_types' => ['card'],
-                'customer_email' => auth()->user()->email,
-                'line_items' => $line_items,
-                'mode' => 'payment',
-                'success_url' => route('success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('cancel'),
-            ]);
 
-            $redirect_url = $sessionCheckout->url;
-        }else {
+            // a) Coupon valideren (optioneel)
+            $promotion_code_id = null;
+            if ($this->coupon_code) {
+                try {
+                    $promo = PromotionCode::retrieve($this->coupon_code);
+                    if (! $promo->active) {
+                        throw new \Exception('Coupon is niet actief');
+                    }
+                    $promotion_code_id = $promo->id;
+                } catch (\Exception $e) {
+                    $this->addError('coupon_code', 'Ongeldige of verlopen kortingscode.');
+                    return;
+                }
+            }
+
+            // b) Bouw line_items voor Stripe Checkout
+            $line_items = [];
+            foreach ($cart_items as $item) {
+                $line_items[] = [
+                    'price_data' => [
+                        'currency'     => 'eur',
+                        'unit_amount'  => (int) round(floatval($item['total_amount']) * 100),
+                        'product_data' => ['name' => $item['name']],
+                    ],
+                    'quantity'    => $item['quantity'],
+                ];
+            }
+
+            $sessionParams = [
+                'payment_method_types' => ['card'],
+                'customer_email'       => auth()->user()->email,
+                'line_items'           => $line_items,
+                'mode'                 => 'payment',
+                'success_url'          => route('success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url'           => route('cancel'),
+            ];
+
+            if ($promotion_code_id) {
+                $sessionParams['discounts'] = [
+                    ['promotion_code' => $promotion_code_id],
+                ];
+            }
+
+            // c) Creëer Checkout Session
+            $session = Session::create($sessionParams);
+
+            // d) Sla session-id op en redirect
+            $order->stripe_session_id = $session->id;
+            $order->save();
+
+            $redirect_url = $session->url;
+        } else {
+            // Cash on Delivery
             $redirect_url = route('success');
         }
 
-        $order->save();
-
-        $address->order_id = $order->id;
-        $address->save();
-
+        // 4) Sla de order-items op, clear cart en mail bevestiging
         $order->items()->createMany($cart_items);
-
-        // Na het plaatsen van de order wordt de cart geleegd
         CartManagement::clearCartItems();
-
-        // zend mail naar de user via de 'OrderPlaced' mail class
-        Mail::to(request()->user())->send(new OrderPlaced($order));
+        Mail::to(auth()->user())->send(new OrderPlaced($order));
 
         return redirect($redirect_url);
     }
 
-
     public function render()
     {
-        $cart_items = CartManagement::getCartItemsFromSession();
+        $cart_items  = CartManagement::getCartItemsFromSession();
         $grand_total = CartManagement::calculateGrandTotal($cart_items);
 
-        return view('livewire.checkout-page', [
-            'cart_items' => $cart_items,
-            'grand_total' => $grand_total,
-        ]);
+        return view('livewire.checkout-page', compact('cart_items', 'grand_total'));
     }
 }

@@ -144,6 +144,27 @@
                                         @enderror
                                     </div>
 
+                                    {{--  Coupon Code --}}
+                                    <div class="col-lg-6 col-md-12 col-12">
+                                        <fieldset>
+                                            <label for="coupon_code" class="block text-sm font-medium text-gray-700">Kortingscode</label>
+                                            <input
+                                                type="text"
+                                                id="coupon_code"
+                                                wire:model.defer="coupon_code"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                                placeholder="Voer hier je code in (optioneel)"
+                                            >
+                                        </fieldset>
+                                        @error('coupon_code')
+                                        <span class="text-red-600 text-sm">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+
+
+
                                     <div class=" shipping-address-area billing-area mt-4">
                                         <div class="minicart-btn-area d-flex align-items-center justify-content-between flex-wrap">
                                             <a href="{{ url('/cart') }}" class="checkout-page-btn minicart-btn btn-secondary">BACK TO CART</a>
