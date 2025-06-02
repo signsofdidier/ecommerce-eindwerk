@@ -26,12 +26,13 @@ class SuperadminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('superadmin')
-            ->path('superadmin')
+            ->path('admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Superadmin/Resources'), for: 'App\\Filament\\Superadmin\\Resources')
             ->discoverPages(in: app_path('Filament/Superadmin/Pages'), for: 'App\\Filament\\Superadmin\\Pages')
+
             ->pages([
                 Pages\Dashboard::class,
             ])

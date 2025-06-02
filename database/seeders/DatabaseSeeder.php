@@ -23,13 +23,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@gmail.com',
-            'password' => Hash::make('password'),
-            'is_superadmin' => true,
-            'company_id' => null, // Geen company
-        ]);
-        User::create([
             'name' => 'Didier Vanassche',
             'email' => 'didier.v@hotmail.com',
             'password' => Hash::make('password'),
@@ -271,6 +264,5 @@ class DatabaseSeeder extends Seeder
             ]);
             $product->colors()->attach($productData['colors']);
         }
-
     }
 }
