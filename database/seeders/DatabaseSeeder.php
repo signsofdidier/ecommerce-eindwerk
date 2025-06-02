@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
+
     public function run(): void
     {
         // USERS
@@ -20,6 +21,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
+        ]);
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('password'),
+            'is_superadmin' => true,
+            'company_id' => null, // Geen company
         ]);
         User::create([
             'name' => 'Didier Vanassche',
@@ -263,5 +271,6 @@ class DatabaseSeeder extends Seeder
             ]);
             $product->colors()->attach($productData['colors']);
         }
+
     }
 }

@@ -13,4 +13,10 @@ class Brand extends Model
     public function products(){
         return $this->hasMany(Product::class);
     }
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

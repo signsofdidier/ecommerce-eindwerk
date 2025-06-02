@@ -12,4 +12,9 @@ class Color extends Model
         return $this->belongsToMany(Product::class);
     }
 
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

@@ -13,4 +13,10 @@ class Setting extends Model
         'free_shipping_threshold',
         'free_shipping_enabled',
     ];
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

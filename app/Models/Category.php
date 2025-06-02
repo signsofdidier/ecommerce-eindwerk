@@ -14,4 +14,9 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

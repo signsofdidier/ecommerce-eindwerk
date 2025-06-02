@@ -58,4 +58,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->email == "admin@gmail.com";
     }
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

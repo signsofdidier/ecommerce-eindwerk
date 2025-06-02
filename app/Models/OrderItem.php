@@ -28,4 +28,10 @@ class OrderItem extends Model
     public function color(){
         return $this->belongsTo(Color::class);
     }
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

@@ -35,4 +35,10 @@ class Order extends Model
     public function address(){
         return $this->hasOne(Address::class);
     }
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

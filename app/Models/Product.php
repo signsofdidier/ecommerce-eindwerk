@@ -44,4 +44,10 @@ class Product extends Model
     public function colors(){
         return $this->belongsToMany(Color::class);
     }
+
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 }

@@ -30,5 +30,10 @@ class Address extends Model
         return "{$this->first_name} {$this->last_name}";
     }
 
+    // Relatie met company
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class);
+    }
 
 }
