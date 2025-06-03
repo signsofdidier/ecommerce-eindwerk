@@ -8,7 +8,6 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
-use Filament\Pages\Auth\Login;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -26,13 +25,14 @@ class SuperadminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('superadmin')
-            ->path('admin')
+            ->path('superadmin')
+            ->login()
+            ->authPasswordBroker('users')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Superadmin/Resources'), for: 'App\\Filament\\Superadmin\\Resources')
             ->discoverPages(in: app_path('Filament/Superadmin/Pages'), for: 'App\\Filament\\Superadmin\\Pages')
-
             ->pages([
                 Pages\Dashboard::class,
             ])
@@ -40,9 +40,6 @@ class SuperadminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-            ])
-            ->authMiddleware([
-                Authenticate::class, // Login
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,8 +51,10 @@ class SuperadminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                \App\Http\Middleware\EnsureUserIsSuperadmin::class, // NA auth!
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+                EnsureUserIsSuperadmin::class, // Terug naar authMiddleware
             ]);
     }
 }
-
