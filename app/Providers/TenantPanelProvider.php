@@ -30,9 +30,11 @@ class TenantPanelProvider extends PanelProvider
 
             // 3) Eigen login­pagina (maken we straks in Filament\Tenant\Pages):
             ->login(\App\Filament\Tenant\Pages\TenantLogin::class)
-            /*->pages([
-                \App\Filament\Tenant\Pages\Dashboard::class,
-            ])*/
+            ->pages([
+                \App\Filament\Pages\Tenant\Dashboard::class,
+            ])
+
+
 
 
             // 4) Kleurenschema (optioneel)

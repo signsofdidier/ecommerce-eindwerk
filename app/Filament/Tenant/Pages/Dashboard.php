@@ -6,9 +6,28 @@ use Filament\Pages\Page;
 
 class Dashboard extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string $view = 'filament.tenant.pages.dashboard';
 
-    protected static ?string $slug = 'dashboard'; // <- Belangrijk voor routing
-    protected static string $view = 'filament.tenant.pages.dashboard'; // of laat dit weg als je standaardlayout gebruikt
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Dashboard';
+    }
+
+    public static function getSlug(): string
+    {
+        return 'dashboard';
+    }
+
+    public static function getRouteName(?string $panel = null): string
+    {
+        return 'filament.tenant.pages.dashboard';
+    }
+
+
+    public static function getRoutes(): \Closure
+    {
+        return fn () => [
+            \Illuminate\Support\Facades\Route::get(static::getSlug(), static::class)->name(static::getRouteName()),
+        ];
+    }
 }
-

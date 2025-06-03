@@ -62,7 +62,10 @@ class TenantResource extends Resource
                 Tables\Actions\Action::make('openTenant')
                     ->label('Open Tenant Panel')
                     ->icon('heroicon-o-external-link')
-                    ->url(fn (Tenant $record): string => route('filament.tenant.pages.dashboard', ['tenant' => $record->slug])),
+                    ->url(fn (Tenant $record): string => route('filament.tenant.pages.dashboard'))
+
+
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
