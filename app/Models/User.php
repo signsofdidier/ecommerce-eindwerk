@@ -95,21 +95,18 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // 1) Landlord-paneel (id = 'landlord'):
-        //    enkel toelaten voor de “superadmin” met e-mail admin@gmail.com
-        if ($panel->id === 'landlord') {
-            return $this->email === 'admin@gmail.com';
+        if ($panel->getId() === 'landlord') {
+            return $this->email === 'admin@example.com';
         }
 
-        // 2) Tenant-paneel (id = 'tenant'):
-        //    enkel als user.tenant_id overeenkomt met Filament::getTenant()->id
-        if ($panel->id === 'tenant') {
+        if ($panel->getId() === 'tenant') {
             return $this->tenant_id !== null
                 && Filament::getTenant() !== null
                 && $this->tenant_id === Filament::getTenant()->id;
         }
 
-        // Andere panels: geen toegang
         return false;
     }
+
+
 }
