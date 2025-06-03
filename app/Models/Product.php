@@ -20,12 +20,23 @@ class Product extends Model
         'brand_id',
         'category_id',
         'stock',
-        'images',       // als je array/json opslaat
+        'images',       // als array/json opgeslagen
         'is_active',
         'is_featured',
         'in_stock',
         'on_sale',
         'shipping_cost',
+    ];
+
+    /**
+     * Casts
+     */
+    protected $casts = [
+        'images'      => 'array',
+        'is_active'   => 'boolean',
+        'is_featured' => 'boolean',
+        'in_stock'    => 'boolean',
+        'on_sale'     => 'boolean',
     ];
 
     // Relaties
@@ -41,7 +52,7 @@ class Product extends Model
 
     public function colors()
     {
-        // pivot-table met tenant_id in kleur_product
+        // pivot-table met tenant_id in color_product
         return $this->belongsToMany(Color::class)
             ->withPivot('tenant_id');
     }

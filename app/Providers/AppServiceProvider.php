@@ -10,10 +10,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Alias 'set.tenant' voor SetTenant‐middleware
+        // Alias 'set.tenant' voor SetTenant-middleware
         $this->app['router']->aliasMiddleware('set.tenant', SetTenant::class);
 
-        // Alias 'ensure.tenant.user' voor EnsureTenantUserIsValid‐middleware
+        // Alias 'ensure.tenant.user' voor EnsureTenantUserIsValid-middleware
         $this->app['router']->aliasMiddleware('ensure.tenant.user', EnsureTenantUserIsValid::class);
     }
 

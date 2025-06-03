@@ -1,41 +1,43 @@
 <?php
-// routes/web.php
-
 use Illuminate\Support\Facades\Route;
-use Filament\Facades\Filament;
 use App\Http\Middleware\EnsureTenantUserIsValid;
 use App\Http\Middleware\SetTenant;
-use App\Http\Livewire\Auth\ForgotPasswordPage;
-use App\Http\Livewire\Auth\LoginPage;
-use App\Http\Livewire\Auth\RegisterPage;
-use App\Http\Livewire\Auth\ResetPasswordPage;
-use App\Http\Livewire\CancelPage;
-use App\Http\Livewire\CartPage;
-use App\Http\Livewire\CategoriesPage;
-use App\Http\Livewire\CheckoutPage;
-use App\Http\Livewire\HomePage;
-use App\Http\Livewire\MyOrderDetailPage;
-use App\Http\Livewire\MyOrdersPage;
-use App\Http\Livewire\ProductDetailPage;
-use App\Http\Livewire\ProductsPage;
-use App\Http\Livewire\SuccessPage;
+
+// Livewire-componenten (controleer dat deze klassen écht bestaan in app/Livewire/…)
+use App\Livewire\Auth\LoginPage;
+use App\Livewire\Auth\RegisterPage;
+use App\Livewire\Auth\ForgotPasswordPage;
+use App\Livewire\Auth\ResetPasswordPage;
+use App\Livewire\HomePage;
+use App\Livewire\CategoriesPage;
+use App\Livewire\ProductsPage;
+use App\Livewire\ProductDetailPage;
+use App\Livewire\CartPage;
+use App\Livewire\CheckoutPage;
+use App\Livewire\MyOrdersPage;
+use App\Livewire\MyOrderDetailPage;
+use App\Livewire\SuccessPage;
+use App\Livewire\CancelPage;
 
 /*
 |--------------------------------------------------------------------------
-| Tenant-routes (wél subdomein en tenant-middleware)
+| 1) Tenant‐routes (alleen op <subdomain>.localhost)
 |--------------------------------------------------------------------------
 |
-| ALLE “tenant‐gebonden” routes (Livewire‐frontend en Filament‐admin)
-| draaien onder de middleware‐groep [web, set.tenant, ensure.tenant.user].
-| Daardoor binden we, op basis van het subdomein (bv. bedrijf1.localhost),
-| automatisch de juiste Tenant en filteren we al je Eloquent‐queries
-| op tenant_id = currentTenant->id.
+| Door Route::domain('{subdomain}.localhost') open je deze groep
+| alléén als er wél een subdomein voor “.localhost” staat (bijv. “bedrijf1.localhost”).
+| Op “http://localhost/” zonder subdomein matcht dit dus niet en wordt deze
+| groep níet geladen. Daardoor zie je de webshop alléén op echte subdomeinen.
 |
 */
 
-Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function () {
+Route::domain('{subdomain}.localhost')->middleware([
+    'web',
+    'set.tenant',
+    'ensure.tenant.user',
+])->group(function () {
     //
-    // 1) Openbare Livewire‐routes voor de webshop (per tenant)
+    // Openbare Livewire‐routes voor de tenant-shop
     //
     Route::get('/', HomePage::class)->name('tenant.home');
     Route::get('/categories', CategoriesPage::class)->name('tenant.categories');
@@ -45,7 +47,7 @@ Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function (
     Route::get('/cart', CartPage::class)->name('tenant.cart');
 
     //
-    // 2) Auth‐routes voor niet‐ingelogde gebruikers (guest) per tenant
+    // Auth-routes voor niet-ingelogde bezoekers (guest)
     //
     Route::middleware('guest')->group(function () {
         Route::get('/login', LoginPage::class)->name('login');
@@ -55,10 +57,10 @@ Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function (
     });
 
     //
-    // 3) Routes voor ingelogde gebruikers (auth) per tenant
+    // Routes voor ingelogde gebruikers (auth)
     //
     Route::middleware('auth')->group(function () {
-        // Logout‐route
+        // Logout
         Route::get('/logout', function () {
             auth()->logout();
             return redirect('/');
@@ -69,9 +71,9 @@ Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function (
         Route::get('/my-orders/{order_id}', MyOrderDetailPage::class)
             ->name('tenant.my-orders.show');
         Route::get('/success', SuccessPage::class)->name('tenant.success');
-        Route::get('/cancel', CancelPage::class)->name('tenant.cancel');
+        Route::get('/cancel',   CancelPage::class)->name('tenant.cancel');
 
-        // PDF‐download factuur (alleen eigen orders)
+        // PDF-download factuur
         Route::get('/my-orders/{order_id}/invoice', function ($order_id) {
             $order = \App\Models\Order::with(['items.product', 'user', 'address'])
                 ->findOrFail($order_id);
@@ -89,8 +91,24 @@ Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function (
     });
 
     //
-    // 4) Filament‐adminpaneel voor deze tenant
-    //    (aanroep: {subdomein}/admin, met login via Filament)
+    // Filament-adminpaneel voor deze tenant
+    // (Filament v3 registreert de routes automatisch via de ServiceProvider)
     //
-    Filament::routes();
 });
+
+/*
+|--------------------------------------------------------------------------
+| 2) Fallback-route voor “localhost” (zonder subdomein)
+|--------------------------------------------------------------------------
+|
+| Als iemand naar http://localhost/ gaat, matcht dat níet in de bovenstaande
+| domain-groep, dus hier komen we terecht. Je kunt hier eenvoudig redirecten
+| naar de superadmin-login (http://localhost/superadmin/login).
+|
+*/
+
+Route::get('/', function () {
+    return redirect('/superadmin/login');
+});
+
+require __DIR__.'/superadmin.php';
