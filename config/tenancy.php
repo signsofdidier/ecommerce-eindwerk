@@ -196,4 +196,17 @@ return [
         '--class' => 'DatabaseSeeder', // root seeder class
         // '--force' => true, // This needs to be true to seed tenant databases in production
     ],
+
+
+    'exempt_paths_from_tenancy' => [
+        'assets/*',
+        'storage/*',
+        'css/*',
+        'js/*',
+        'images/*',
+        'fonts/*',
+    ],
+
+
+
 ];

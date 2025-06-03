@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
 <!-- announcement bar start -->
 <div class="announcement-bar bg-1 py-1 py-lg-2">
     <div class="container-fluid px-0"></div>
