@@ -107,8 +107,15 @@ Route::domain('{subdomain}.localhost')->middleware([
 |
 */
 
+// … jouw tenant‐routes …
+
+// Fallback op “localhost/” (zonder subdomein)
 Route::get('/', function () {
     return redirect('/superadmin/login');
 });
 
-require __DIR__.'/superadmin.php';
+// *** BELANGRIJK: wikkel superadmin.php in web-middleware ***
+Route::middleware('web')->group(function () {
+    require __DIR__ . '/superadmin.php';
+});
+
