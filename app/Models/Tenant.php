@@ -4,21 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\BelongsToTenant;
 
-class Brand extends Model
+class Tenant extends Model
 {
     use HasFactory;
-    use BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
+        'subdomain',
         'name',
-        'slug',
     ];
 
+    // (Eventuele relaties naar producten, categorieën, etc.)
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 }

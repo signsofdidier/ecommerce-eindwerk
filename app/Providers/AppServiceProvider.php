@@ -2,24 +2,23 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Middleware\SetTenant;
+use App\Http\Middleware\EnsureTenantUserIsValid;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        // Alias 'set.tenant' voor SetTenant‐middleware
+        $this->app['router']->aliasMiddleware('set.tenant', SetTenant::class);
+
+        // Alias 'ensure.tenant.user' voor EnsureTenantUserIsValid‐middleware
+        $this->app['router']->aliasMiddleware('ensure.tenant.user', EnsureTenantUserIsValid::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        Paginator::useBootstrapFive();
+        //
     }
 }

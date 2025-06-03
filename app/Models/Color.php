@@ -2,14 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\BelongsToTenant;
 
 class Color extends Model
 {
-    protected $fillable = ['product_id', 'name', 'hex'];
+    use HasFactory;
+    use BelongsToTenant;
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
+    protected $fillable = [
+        'tenant_id',
+        'name',
+        'hex',
+    ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('tenant_id');
     }
-
 }

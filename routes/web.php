@@ -1,62 +1,96 @@
 <?php
+// routes/web.php
 
-use App\Livewire\Auth\ForgotPasswordPage;
-use App\Livewire\Auth\LoginPage;
-use App\Livewire\Auth\RegisterPage;
-use App\Livewire\Auth\ResetPasswordPage;
-use App\Livewire\CancelPage;
-use App\Livewire\CartPage;
-use App\Livewire\CategoriesPage;
-use App\Livewire\CheckoutPage;
-use App\Livewire\HomePage;
-use App\Livewire\MyOrderDetailPage;
-use App\Livewire\MyOrdersPage;
-use App\Livewire\ProductDetailPage;
-use App\Livewire\ProductsPage;
-use App\Livewire\SuccessPage;
 use Illuminate\Support\Facades\Route;
+use Filament\Facades\Filament;
+use App\Http\Middleware\EnsureTenantUserIsValid;
+use App\Http\Middleware\SetTenant;
+use App\Http\Livewire\Auth\ForgotPasswordPage;
+use App\Http\Livewire\Auth\LoginPage;
+use App\Http\Livewire\Auth\RegisterPage;
+use App\Http\Livewire\Auth\ResetPasswordPage;
+use App\Http\Livewire\CancelPage;
+use App\Http\Livewire\CartPage;
+use App\Http\Livewire\CategoriesPage;
+use App\Http\Livewire\CheckoutPage;
+use App\Http\Livewire\HomePage;
+use App\Http\Livewire\MyOrderDetailPage;
+use App\Http\Livewire\MyOrdersPage;
+use App\Http\Livewire\ProductDetailPage;
+use App\Http\Livewire\ProductsPage;
+use App\Http\Livewire\SuccessPage;
 
-// openbare routes voor alle users
-Route::get('/', HomePage::class);
-Route::get('/categories', CategoriesPage::class);
-Route::get('/products', ProductsPage::class);
-Route::get('/cart', CartPage::class);
-Route::get('/products/{slug}', ProductDetailPage::class);
+/*
+|--------------------------------------------------------------------------
+| Tenant-routes (wél subdomein en tenant-middleware)
+|--------------------------------------------------------------------------
+|
+| ALLE “tenant‐gebonden” routes (Livewire‐frontend en Filament‐admin)
+| draaien onder de middleware‐groep [web, set.tenant, ensure.tenant.user].
+| Daardoor binden we, op basis van het subdomein (bv. bedrijf1.localhost),
+| automatisch de juiste Tenant en filteren we al je Eloquent‐queries
+| op tenant_id = currentTenant->id.
+|
+*/
 
-// openbare routes voor niet ingelogde users
-Route::middleware('guest')->group(function() {
-    Route::get('/login', LoginPage::class)->name('login');
-    Route::get('/register', RegisterPage::class);
-    Route::get('/forgot', ForgotPasswordPage::class)->name('password.request');
-    Route::get('/reset/{token}', ResetPasswordPage::class)->name('password.reset');
-});
+Route::middleware(['web', 'set.tenant', 'ensure.tenant.user'])->group(function () {
+    //
+    // 1) Openbare Livewire‐routes voor de webshop (per tenant)
+    //
+    Route::get('/', HomePage::class)->name('tenant.home');
+    Route::get('/categories', CategoriesPage::class)->name('tenant.categories');
+    Route::get('/products', ProductsPage::class)->name('tenant.products');
+    Route::get('/product/{slug}', ProductDetailPage::class)
+        ->name('tenant.product.detail');
+    Route::get('/cart', CartPage::class)->name('tenant.cart');
 
-// enkel voor ingelogde users
-Route::middleware('auth')->group(function() {
-    // navbar logout knop voor ingelogde user
-    Route::get('/logout', function() {
-       auth()->logout();
-       return redirect('/');
+    //
+    // 2) Auth‐routes voor niet‐ingelogde gebruikers (guest) per tenant
+    //
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', LoginPage::class)->name('login');
+        Route::get('/register', RegisterPage::class)->name('register');
+        Route::get('/forgot', ForgotPasswordPage::class)->name('password.request');
+        Route::get('/reset/{token}', ResetPasswordPage::class)->name('password.reset');
     });
-    Route::get('/checkout', CheckoutPage::class);
-    Route::get('/my-orders', MyOrdersPage::class);
-    Route::get('/my-orders/{order_id}', MyOrderDetailPage::class)->name('my-orders.show');
-    Route::get('/success', SuccessPage::class)->name('success');
-    Route::get('/cancel', CancelPage::class)->name('cancel');
 
-    Route::get('/my-orders/{order_id}/invoice', function ($order_id) {
-        $order = \App\Models\Order::with('items.product', 'user', 'address')->findOrFail($order_id);
+    //
+    // 3) Routes voor ingelogde gebruikers (auth) per tenant
+    //
+    Route::middleware('auth')->group(function () {
+        // Logout‐route
+        Route::get('/logout', function () {
+            auth()->logout();
+            return redirect('/');
+        })->name('logout');
 
-        if ($order->user_id !== auth()->id()) {
-            abort(403); // Je mag alleen je eigen orders zien
-        }
+        Route::get('/checkout', CheckoutPage::class)->name('tenant.checkout');
+        Route::get('/my-orders', MyOrdersPage::class)->name('tenant.my-orders');
+        Route::get('/my-orders/{order_id}', MyOrderDetailPage::class)
+            ->name('tenant.my-orders.show');
+        Route::get('/success', SuccessPage::class)->name('tenant.success');
+        Route::get('/cancel', CancelPage::class)->name('tenant.cancel');
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
-            'order' => $order
-        ]);
+        // PDF‐download factuur (alleen eigen orders)
+        Route::get('/my-orders/{order_id}/invoice', function ($order_id) {
+            $order = \App\Models\Order::with(['items.product', 'user', 'address'])
+                ->findOrFail($order_id);
 
-        return $pdf->download('factuur-order-' . $order->id . '.pdf');
-    })->name('my-orders.invoice')->middleware('auth');
+            if ($order->user_id !== auth()->id()) {
+                abort(403, 'Je mag alleen je eigen facturen downloaden.');
+            }
 
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
+                'order' => $order,
+            ]);
 
+            return $pdf->download('factuur-order-' . $order->id . '.pdf');
+        })->name('tenant.my-orders.invoice');
+    });
+
+    //
+    // 4) Filament‐adminpaneel voor deze tenant
+    //    (aanroep: {subdomein}/admin, met login via Filament)
+    //
+    Filament::routes();
 });

@@ -4,35 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\BelongsToTenant;
 
 class Order extends Model
 {
     use HasFactory;
+    use BelongsToTenant;
 
     protected $fillable = [
+        'tenant_id',
         'user_id',
-        'sub_total',
-        'grand_total',
-        'tax_amount',
-        'discount_amount',
-        'payment_method',
-        'payment_status',
+        'amount',
         'status',
-        'currency',
-        'shipping_amount',
-        'shipping_method',
-        'notes',
+        'sub_total',
+        'tax',
+        'discount',
+        'shipping_cost',
+        'transaction_id',
+        // etc. – zet hier alle kolommen die in jouw schema staan
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-    public function items(){
+    public function items()
+    {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function address(){
-        return $this->hasOne(Address::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
