@@ -33,6 +33,12 @@ class BrandResource extends Resource
     // Dit bepaald de volgorde in de sidebar
     protected static ?int $navigationSort = 2;
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('company_id', filament('tenant')->id);
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form

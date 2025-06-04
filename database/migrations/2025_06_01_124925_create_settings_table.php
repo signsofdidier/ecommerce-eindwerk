@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
 
             // Vanaf dit bedrag is er gratis verzending
             $table->decimal('free_shipping_threshold', 10, 2)
@@ -24,11 +25,13 @@ return new class extends Migration
 
         // Direct een rij met default
         // Zo moet de admin na migratie niet eerst handmatig een nieuwe rij toe te voegen.
-        DB::table('settings')->insert([
+        /*DB::table('settings')->insert([
+            'company_id' => 1, // of het id van je testcompany
             'free_shipping_threshold' => 1000.00,
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ]);*/
+
     }
 
     /**

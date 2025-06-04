@@ -16,6 +16,7 @@ return new class extends Migration
                 ->nullable() // mogelijks hebben sommige producten geen kleur
                 ->constrained()
                 ->nullOnDelete();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
         });
     }
 

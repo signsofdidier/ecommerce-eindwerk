@@ -8,6 +8,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\Company;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -15,29 +17,39 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // USERS
+        // 1. COMPANY aanmaken (voor tenant multi-tenancy)
+        $company = Company::create([
+            'name' => 'Demo Company',
+            'slug' => 'demo-company',
+        ]);
+
+        // USERS (koppelen aan company_id)
         User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
+            'company_id' => $company->id,
         ]);
         User::create([
             'name' => 'Didier Vanassche',
             'email' => 'didier.v@hotmail.com',
             'password' => Hash::make('password'),
+            'company_id' => $company->id,
         ]);
         User::create([
             'name' => 'Sophie Adams',
             'email' => 'sophie@gmail.com',
             'password' => Hash::make('password'),
+            'company_id' => $company->id,
         ]);
         User::create([
             'name' => 'Charles Peters',
             'email' => 'charles@gmail.com',
             'password' => Hash::make('password'),
+            'company_id' => $company->id,
         ]);
 
-        // BRANDS
+        // BRANDS (koppelen aan company_id)
         $brands = [
             'Designo',
             'SitWell',
@@ -45,14 +57,16 @@ class DatabaseSeeder extends Seeder
             'UrbanCraft',
             'VintageVibe'
         ];
+        $brandModels = [];
         foreach ($brands as $brand) {
-            Brand::create([
+            $brandModels[] = Brand::create([
                 'name' => $brand,
                 'slug' => Str::slug($brand),
+                'company_id' => $company->id,
             ]);
         }
 
-        // CATEGORIES
+        // CATEGORIES (koppelen aan company_id)
         $categories = [
             'Chairs',
             'Sofas',
@@ -62,14 +76,16 @@ class DatabaseSeeder extends Seeder
             'Cupboards',
             'Accessories'
         ];
+        $categoryModels = [];
         foreach ($categories as $cat) {
-            Category::create([
+            $categoryModels[] = Category::create([
                 'name' => $cat,
                 'slug' => Str::slug($cat),
+                'company_id' => $company->id,
             ]);
         }
 
-        // COLORS
+        // COLORS (koppelen aan company_id)
         $colors = [
             ['name' => 'Black',        'hex' => '#000000'],
             ['name' => 'White Broken', 'hex' => '#F5F5F5'],
@@ -78,11 +94,15 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Taupe',        'hex' => '#483C32'],
             ['name' => 'Walnut',       'hex' => '#77604E'],
         ];
+        $colorModels = [];
         foreach ($colors as $color) {
-            Color::create($color);
+            $colorModels[] = Color::create([
+                ...$color,
+                'company_id' => $company->id,
+            ]);
         }
 
-        // PRODUCTS DATA
+        // PRODUCTS DATA (koppelen aan company_id)
         $products = [
             [
                 'name' => 'Nordic Lounge Chair',
@@ -216,7 +236,6 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        // JE EIGEN PLAATJES NAAR KEUZE (gewoon bestandsnamen!):
         $localImages = [
             'chairs'   => ['plantkast-1.jpg', 'plantkast-2.jpg', 'plantkast-3.jpg'],
             'sofas'    => ['zetel-1.jpg', 'zetel-2.jpg', 'zetel-3.jpg', 'zetel-4.jpg'],
@@ -241,10 +260,7 @@ class DatabaseSeeder extends Seeder
                 $imgs = $localImages['default'];
             }
 
-            // Per product 1 tot 3 afbeeldingen (random aantal)
             $imgs = array_slice($imgs, 0, rand(1, count($imgs)));
-
-            // ALTIJD 'products/' VOOR PAD!
             $imgs = array_map(fn($img) => 'products/' . ltrim($img, '/'), $imgs);
 
             $product = Product::create([
@@ -260,8 +276,20 @@ class DatabaseSeeder extends Seeder
                 'in_stock'    => $productData['in_stock'],
                 'on_sale'     => $productData['on_sale'],
                 'shipping_cost' => $productData['shipping_cost'],
+                'company_id'  => $company->id,
             ]);
-            $product->colors()->attach($productData['colors']);
+            $colorPivotData = [];
+            foreach ($productData['colors'] as $colorId) {
+                $colorPivotData[$colorId] = ['company_id' => $company->id];
+            }
+            $product->colors()->attach($colorPivotData);
         }
+
+        // SETTINGS (koppelen aan company_id)
+        Setting::create([
+            'company_id' => $company->id,
+            'free_shipping_threshold' => 1000,
+            // Voeg hier andere kolommen toe indien nodig
+        ]);
     }
 }

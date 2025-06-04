@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('colors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('hex')->nullable();
             $table->timestamps();

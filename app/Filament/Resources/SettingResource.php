@@ -13,6 +13,8 @@ use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class SettingResource extends Resource
 {
@@ -23,6 +25,13 @@ class SettingResource extends Resource
 
     // Groep in de navigatie (dit staat links in het adminpaneel)
     protected static ?string $navigationGroup = 'Settings';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('company_id', filament('tenant')->id);
+    }
+
+
 
     // Label voor de lijstweergave
     public static function getLabel(): string
@@ -97,4 +106,6 @@ class SettingResource extends Resource
             'edit'   => Pages\EditSetting::route('/{record}/edit'),
         ];
     }
+
+
 }
