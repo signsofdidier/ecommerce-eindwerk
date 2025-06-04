@@ -135,7 +135,7 @@ return [
          * disable asset() helper tenancy and explicitly use tenant_asset() calls in places
          * where you want to use tenant-specific assets (product images, avatars, etc).
          */
-        'asset_helper_tenancy' => true,
+        'asset_helper_tenancy' => false,
     ],
 
     /**
@@ -198,14 +198,7 @@ return [
     ],
 
 
-    'exempt_paths_from_tenancy' => [
-        'assets/*',
-        'storage/*',
-        'css/*',
-        'js/*',
-        'images/*',
-        'fonts/*',
-    ],
+
 
 
 

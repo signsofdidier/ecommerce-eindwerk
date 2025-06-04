@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+
     <link href="{{ asset('assets/css/own-style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/banner.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/breadcrumb.css') }}" rel="stylesheet">
