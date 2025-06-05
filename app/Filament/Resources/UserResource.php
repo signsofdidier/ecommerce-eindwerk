@@ -24,6 +24,9 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    // Dit moet erbij om users te doen werken per company
+    protected static ?string $tenantOwnershipRelationshipName = 'companies';
+
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     // GLOBAL SEARCH activation op naam

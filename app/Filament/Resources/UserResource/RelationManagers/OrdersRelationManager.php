@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Filament\Resources\OrderResource;
 use App\Models\Order;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -92,5 +93,12 @@ class OrdersRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    // Dit filtert alle users zodat je enkel de users van de huidige tenant/company ziet (en kan toevoegen/bewerken/verwijderen).
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('company_id', Filament::getTenant()->id);
     }
 }

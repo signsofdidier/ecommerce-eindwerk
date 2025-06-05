@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -54,12 +55,14 @@ class BrandResource extends Resource
                                 ->dehydrated()
                                 // De kolom die uniek moet zijn (bv 'slug' in de categories tabel)
                                 // Negeer het huidige record bij het controleren (belangrijk bij bewerken)
-                                ->unique(Brand::class, 'slug', ignoreRecord: true),
+                                ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', auth()->user()?->currentCompany?->id)),
                         ]),
 
                     FileUpload::make('image')
                         ->image()
-                        ->directory('brands'),
+                        //->directory('brands'),
+                        // Upload in TENANCY map in storage
+                        ->directory(fn () => 'brands/company-' . Filament::getTenant()->id),
 
                     Toggle::make('is_active')
                         ->required()

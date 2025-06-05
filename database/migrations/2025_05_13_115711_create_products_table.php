@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug'); // uniek onderaan de migration lijst samen met company
             $table->json('images')->nullable();
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2);
@@ -27,6 +27,9 @@ return new class extends Migration
             $table->boolean('on_sale')->default(false);
             $table->decimal('shipping_cost', 8, 2)->default(0);
             $table->timestamps();
+
+            // De slug moet uniek zijn per company
+            $table->unique(['slug', 'company_id']);
         });
     }
 

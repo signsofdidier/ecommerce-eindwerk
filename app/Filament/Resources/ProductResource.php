@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
@@ -63,11 +64,15 @@ class ProductResource extends Resource
                             ->disabled()
                             ->dehydrated()
                             // Zorg dat de slug uniek is in de 'products' tabel, maar negeer het huidige record bij het bewerken
-                            ->unique(Product::class, 'slug', ignoreRecord: true),
+                            ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', auth()->user()?->currentCompany?->id)),
 
                         Select::make('colors')
                             ->multiple()
-                            ->relationship('colors', 'name')
+                            ->relationship(
+                                'colors',
+                                'name',
+                                //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                            )
                             ->label('Available Colors')
                             ->preload() // laadt alle kleuren in één keer
                             ->searchable(), // doorzoekbaar indien veel kleuren
@@ -81,7 +86,9 @@ class ProductResource extends Resource
                     Section::make('Images')->schema([
                         FileUpload::make('images')
                             ->multiple()
-                            ->directory('products')
+                            //->directory('products')
+                            // Upload in TENANCY map in storage
+                            ->directory(fn () => 'products/company-' . Filament::getTenant()->id)
                             ->maxFiles(5)
                             ->reorderable()
                             ->imageEditor() //editor voor afbeeldingen
@@ -109,13 +116,21 @@ class ProductResource extends Resource
                         ->required()
                         ->searchable()
                         ->preload() // preload alle categoriën voor sneller laden
-                        ->relationship('category', 'name'), // relatie met de gelinkte category model
+                            ->relationship(
+                                'category',
+                                'name',
+                               //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                            ), // relatie met de gelinkte category model
 
                         Select::make('brand_id')
                             ->required()
                             ->searchable()
                             ->preload() // preload alle categoriën voor sneller laden
-                            ->relationship('brand', 'name'), // relatie met de gelinkte category model
+                            ->relationship(
+                                'brand',
+                                'name',
+                                //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                            ), // relatie met de gelinkte brand model
                     ]),
 
                     Section::make('status')->schema([
@@ -181,9 +196,17 @@ class ProductResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('categories')
-                    ->relationship('category', 'name'),
+                    ->relationship(
+                        'category',
+                        'name',
+                        //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                    ),
                 SelectFilter::make('brands')
-                    ->relationship('brand', 'name'),
+                    ->relationship(
+                        'brand',
+                        'name',
+                        //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                    ),
             ])
             ->actions([
                 ActionGroup::make([

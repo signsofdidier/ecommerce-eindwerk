@@ -7,6 +7,7 @@ use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Filament\Resources\OrderResource\RelationManagers\AddressRelationManager;
 use App\Models\Order;
 use App\Models\Product;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
@@ -47,7 +48,13 @@ class OrderResource extends Resource
                     Section::make('Order Information')->schema([
                         Select::make('user_id')
                             ->label('Customer')
-                            ->relationship('user', 'name')
+                            ->relationship(
+                                'user',
+                                'name',
+                                fn ($query) => $query->whereHas('companies', function ($q) {
+                                    $q->where('companies.id', Filament::getTenant()->id);
+                                })
+                            )
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -124,7 +131,11 @@ class OrderResource extends Resource
                         ->relationship()
                         ->schema([
                             Select::make('product_id')
-                            ->relationship('product', 'name')
+                                ->relationship(
+                                    'product',
+                                    'name',
+                                    //fn ($query) => $query->where('company_id', Filament::getTenant()->id)
+                                )
                             ->searchable()
                             ->preload()
                             ->required()

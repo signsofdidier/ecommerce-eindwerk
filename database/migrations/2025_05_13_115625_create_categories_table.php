@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            // De slug moet uniek zijn per company
+            $table->unique(['slug', 'company_id']);
         });
     }
 

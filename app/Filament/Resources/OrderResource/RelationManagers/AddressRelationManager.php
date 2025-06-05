@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrderResource\RelationManagers;
 
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -80,5 +81,12 @@ class AddressRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    // Dit filtert alle adressen zodat je enkel de adressen van de huidige tenant/company ziet (en kan toevoegen/bewerken/verwijderen).
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('company_id', Filament::getTenant()->id);
     }
 }

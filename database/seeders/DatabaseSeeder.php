@@ -31,24 +31,30 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
         ]);
+        $admin->companies()->syncWithoutDetaching([$company1->id, $company2->id]);
 
-        User::create([
+        $didier = User::create([
             'name' => 'Didier Vanassche',
             'email' => 'didier.v@hotmail.com',
             'password' => Hash::make('password'),
         ]);
-        User::create([
+        $didier->companies()->syncWithoutDetaching([$company1->id, $company2->id]);
+
+        $sophie = User::create([
             'name' => 'Sophie Adams',
             'email' => 'sophie@gmail.com',
             'password' => Hash::make('password'),
         ]);
-        User::create([
+        $sophie->companies()->syncWithoutDetaching([$company1->id]);
+
+        $charles = User::create([
             'name' => 'Charles Peters',
             'email' => 'charles@gmail.com',
             'password' => Hash::make('password'),
         ]);
+        $charles->companies()->syncWithoutDetaching([$company1->id]);
 
-        $admin->companies()->syncWithoutDetaching([$company1->id, $company2->id]);
+
 
         // 3. BRANDS
         $brands = [
