@@ -55,7 +55,7 @@ class Product extends Model
 
     //"Elke keer dat je een nieuw OrderItem maakt, zorg er automatisch voor dat het gekoppeld is aan de juiste company."
     //Dit voorkomt dat je vergeet om company_id te vullen en je database foutmeldingen geeft zoals "Field 'company_id' doesn't have a default value".
-    protected static function booted()
+    /*protected static function booted()
     {
         static::creating(function ($product) {
             if (empty($product->company_id)) {
@@ -67,5 +67,37 @@ class Product extends Model
         static::addGlobalScope('company', function ($query) {
             $query->where('company_id', Filament::getTenant()?->id);
         });
+    }*/
+
+    // Dit vult company_id automatisch bij het aanmaken
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            if (empty($product->company_id)) {
+                // Eerst: Filament admin context
+                if (class_exists(\Filament\Facades\Filament::class) && Filament::getTenant()) {
+                    $product->company_id = Filament::getTenant()->id;
+                }
+                // Dan: frontend context
+                elseif (function_exists('currentCompany') && currentCompany()) {
+                    $product->company_id = currentCompany()->id;
+                }
+            }
+        });
+
+        // De universele global scope
+        static::addGlobalScope('company', function ($query) {
+            // Admin context (Filament)
+            if (class_exists(\Filament\Facades\Filament::class) && Filament::getTenant()) {
+                $query->where('company_id', Filament::getTenant()->id);
+                return;
+            }
+            // Frontend context
+            if (function_exists('currentCompany') && currentCompany()) {
+                $query->where('company_id', currentCompany()->id);
+            }
+        });
     }
+
+
 }

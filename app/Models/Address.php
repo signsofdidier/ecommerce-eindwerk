@@ -39,7 +39,7 @@ class Address extends Model
 
     //"Elke keer dat je een nieuw OrderItem maakt, zorg er automatisch voor dat het gekoppeld is aan de juiste company."
     //Dit voorkomt dat je vergeet om company_id te vullen en je database foutmeldingen geeft zoals "Field 'company_id' doesn't have a default value".
-    protected static function booted()
+    /*protected static function booted()
     {
         static::creating(function ($address) {
             if (empty($address->company_id)) {
@@ -51,7 +51,31 @@ class Address extends Model
         static::addGlobalScope('company', function ($query) {
             $query->where('company_id', Filament::getTenant()?->id);
         });
+    }*/
+
+    protected static function booted()
+    {
+        static::creating(function ($address) {
+            if (empty($address->company_id)) {
+                if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
+                    $address->company_id = \Filament\Facades\Filament::getTenant()->id;
+                } elseif (function_exists('currentCompany') && currentCompany()) {
+                    $address->company_id = currentCompany()->id;
+                }
+            }
+        });
+
+        static::addGlobalScope('company', function ($query) {
+            if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
+                $query->where('company_id', \Filament\Facades\Filament::getTenant()->id);
+                return;
+            }
+            if (function_exists('currentCompany') && currentCompany()) {
+                $query->where('company_id', currentCompany()->id);
+            }
+        });
     }
+
 
 
 }
