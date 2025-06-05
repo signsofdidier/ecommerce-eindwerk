@@ -28,4 +28,9 @@ class OrderItem extends Model
     public function color(){
         return $this->belongsTo(Color::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

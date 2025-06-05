@@ -288,10 +288,10 @@ class DatabaseSeeder extends Seeder
             $product->colors()->attach($colorIds);
         }
 
-        Setting::create([
+        /*Setting::create([
             'company_id' => $company1->id,
             'free_shipping_threshold' => 1000,
-        ]);
+        ]);*/
 
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\OrderResource\Widgets\OrderStats;
+use App\Http\Middleware\ApplyTenantScopes;
 use App\Models\Company;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -57,6 +58,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->tenantMiddleware([
+                ApplyTenantScopes::class,
+            ], isPersistent: true);
     }
 }
