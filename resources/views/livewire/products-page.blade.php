@@ -339,19 +339,21 @@
         </div>
     </div>
 
+    {{-- COLOR FILTER STYLING --}}
+    <style>
+        /* Zorg dat bij selectie een duidelijke outline/ring verschijnt */
+        .color-lists input[type="checkbox"]:checked + .color-swatch {
+            border: 3px solid #F76B6A;
+            box-shadow: 0 0 0 2px #F76B6A;
+        }
+        .color-swatch {
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+    </style>
+
 </div>
 
-{{-- COLOR FILTER STYLING --}}
-<style>
-    /* Zorg dat bij selectie een duidelijke outline/ring verschijnt */
-    .color-lists input[type="checkbox"]:checked + .color-swatch {
-        border: 3px solid #F76B6A;
-        box-shadow: 0 0 0 2px #F76B6A;
-    }
-    .color-swatch {
-        transition: border 0.2s, box-shadow 0.2s;
-    }
-</style>
+
 
 
 
