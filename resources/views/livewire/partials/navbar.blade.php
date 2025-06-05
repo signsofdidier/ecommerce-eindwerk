@@ -1,3 +1,7 @@
+@php
+    $company = currentCompany();
+@endphp
+
 <div>
     <!-- announcement bar start -->
     <div class="announcement-bar bg-1 py-1 py-lg-2">
@@ -133,9 +137,8 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-4">
                         <div class="header-logo">
-                            <a href="/" class="logo-main">
+                            <a href="{{ url('/' . ($company ? $company->slug : '')) }}" class="logo-main">
                                 <img src="{{ asset('assets/img/logo.png') }}" loading="lazy" alt="bisum">
-                                {{--<h2 class="text-bold">K(L)ASSE</h2>--}}
                             </a>
                         </div>
                     </div>
@@ -145,27 +148,27 @@
                         <nav class="site-navigation">
                             <ul class="main-menu list-unstyled justify-content-center">
                                 <li class="menu-list-item nav-item {{ request()->is('/') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/') }}">
+                                    <a wire:navigate class="nav-link" href="{{ url('/' . currentCompany()->slug) }}">
                                         Home
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('products') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/products') }}">
+                                    <a wire:navigate class="nav-link" href="{{ url('/' . currentCompany()->slug . '/products') }}">
                                         Products
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('blog') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/blog') }}">
+                                    <a wire:navigate class="nav-link" href="{{ url('/' . currentCompany()->slug . '/blog') }}">
                                         Blog
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('about-us') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/about-us') }}">
+                                    <a wire:navigate class="nav-link" href="{{ url('/' . currentCompany()->slug . '/about-us') }}">
                                         About Us
                                     </a>
                                 </li>
                                 <li wire:navigate class="menu-list-item nav-item {{ request()->is('contact') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ url('/contact') }}">Contact</a>
+                                    <a class="nav-link" href="{{ url('/' . currentCompany()->slug . '/contact') }}">Contact</a>
                             </li>
                         </ul>
                     </nav>

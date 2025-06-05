@@ -24,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         Company::observe(CompanyObserver::class);
+        
     }
 }

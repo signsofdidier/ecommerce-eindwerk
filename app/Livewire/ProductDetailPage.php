@@ -13,20 +13,28 @@ class ProductDetailPage extends Component
 {
 
     public $slug;
+    public $product;
     public $quantity = 1;
     public $selectedColorId;
 
-    public function mount($slug){
+    public function mount($slug)
+    {
         $this->slug = $slug;
 
-        // Haal product inclusief kleuren in 1 keer op
-        $product = Product::with('colors')
+        // tenant filter
+        $this->product = Product::with('colors')
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->where('company_id', currentCompany()?->id) //  multi-tenancy filter
+            ->first();
 
-        // Standard de eerste kleur nemen
-        /*$this->selectedColorId = optional($product->colors->first())->id;*/
+        if (!$this->product) {
+            abort(404); // Product niet gevonden of hoort niet bij deze tenant
+        }
+
+        // Standaard eerste kleur nemen
+        $this->selectedColorId = optional($this->product->colors->first())->id;
     }
+
     public function increaseQuantity(){
         $this->quantity++;
     }
@@ -66,6 +74,7 @@ class ProductDetailPage extends Component
     {
         // haal alleen de actieve, featured producten op (max. 8)
         $featuredProducts = Product::query()
+            ->where('company_id', currentCompany()?->id) // multi-tenant
             ->where('is_active', 1)
             ->where('is_featured', 1)
             ->take(8)

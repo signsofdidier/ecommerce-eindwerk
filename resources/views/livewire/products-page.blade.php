@@ -43,9 +43,9 @@
                                 <div class="col-lg-4 col-md-6 col-6" wire:key="{{ $product->id }}">
                                     <div class="product-card">
                                         <div class="product-card-img">
-                                            <a class="product-hover-zoom" href="{{ url('/products') }}/{{ $product->slug }}">
+                                            <a class="product-hover-zoom" href="{{ url('/' . currentCompany()->slug . '/products') }}/{{ $product->slug }}">
                                                 <img class="primary-img" src="{{ url('storage', $product->images[0]) }}"
-                                                     alt="product-img">
+                                                     alt="{{ $product->name }}">
                                             </a>
 
                                             {{--<div class="product-badge">
@@ -93,7 +93,7 @@
 
                                             {{-- PRODUCT TITLE --}}
                                             <h3 class="product-card-title">
-                                                <a href="{{ url('/products') }}/{{ $product->slug }}">{{ $product->name }}</a>
+                                                <a href="{{ url('/' . currentCompany()->slug . '/products') }}/{{ $product->slug }}">{{ $product->name }}</a>
                                             </h3>
 
                                             {{-- PRODUCT PRICE --}}
@@ -108,14 +108,6 @@
 
                         </div>
 
-
-                        {{--<div class="row">
-                            <div class="col-lg-9 offset-lg-3">
-                                <nav wire:navigate class="custom-pagination">
-                                    {{ $products->links('vendor.pagination.custom') }}
-                                </nav>
-                            </div>
-                        </div>--}}
                     </div>
 
                     <div class="mt-5">

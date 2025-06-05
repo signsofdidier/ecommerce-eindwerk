@@ -21,6 +21,13 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
+// Home zonder bedrijf => lijst van companies of redirect naar een
+/*Route::get('/', function () {
+
+    $firstCompany = \App\Models\Company::first();
+    if ($firstCompany) return redirect('/' . $firstCompany->slug);
+});*/
+
 
 Route::group([
     'prefix' => '{company}',
