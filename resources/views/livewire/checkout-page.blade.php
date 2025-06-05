@@ -134,7 +134,7 @@
                                                 <input type="radio" id="payment-cod" wire:model="payment_method" value="cod" class="btn-check">
                                                 <label for="payment-cod" class="btn btn-outline-secondary flex-fill">CASH ON DELIVERY</label>
                                                 <input type="radio" id="payment-stripe" wire:model="payment_method" value="stripe" class="btn-check">
-                                                <label for="payment-stripe" class="btn btn-outline-secondary flex-fill">STRIPE</label>
+                                                <label for="payment-stripe" class="btn btn-outline-secondary flex-fill">BANCONTACT</label>
                                             </div>
                                         </fieldset>
                                         @error('payment_method')

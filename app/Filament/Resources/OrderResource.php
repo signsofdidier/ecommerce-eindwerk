@@ -54,7 +54,7 @@ class OrderResource extends Resource
 
                         Select::make('payment_method')
                             ->options([
-                                'stripe' => 'Stripe',
+                                'stripe' => 'Bancontact',
                                 'cod' => 'Cash on Delivery',
                             ])
                             ->required(),
@@ -105,9 +105,8 @@ class OrderResource extends Resource
 
                         Select::make('shipping_method')
                             ->options([
-                                'bpost' => 'Bpost',
-                                'dhl' => 'DHL',
-                                'ups' => 'UPS',
+                                'truck' => 'Truck Delivery',
+                                'pickup' => 'Pickup at store',
                             ]),
 
                         TextArea::make('notes')

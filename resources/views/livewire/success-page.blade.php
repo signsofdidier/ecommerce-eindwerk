@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-6 text-end">
                                 <strong>Payment Method:</strong>
-                                <div>{{ $order->payment_method == 'cod' ? 'Cash on Delivery' : 'Card' }}</div>
+                                <div>{{ $order->payment_method == 'cod' ? 'Cash on Delivery' : 'Bancontact' }}</div>
                             </div>
                         </div>
 

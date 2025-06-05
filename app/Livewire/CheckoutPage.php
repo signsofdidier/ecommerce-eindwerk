@@ -94,7 +94,7 @@ class CheckoutPage extends Component
 
         // Sla verzendkosten op in het order (wordt later in database bewaard)
         $order->shipping_amount = $this->shipping_amount;
-        $order->shipping_method = 'Flat Rate';
+        $order->shipping_method = 'Truck Delivery';
         $order->notes = 'Order placed by ' . auth()->user()->name;
 
         // Maak het Address-object aan
