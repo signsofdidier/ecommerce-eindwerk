@@ -81,8 +81,8 @@
                             </div>
 
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="{{ url('/products') }}" class="btn btn-outline-secondary px-4">Continue Shopping</a>
-                                <a href="{{ url('/my-orders') }}" class="btn btn-primary px-4">View My Orders</a>
+                                <a href="{{ url('/' . currentCompany()->slug . '/products') }}" class="btn btn-outline-secondary px-4">Continue Shopping</a>
+                                <a href="{{ url('/' . currentCompany()->slug . '/my-orders') }}" class="btn btn-primary px-4">View My Orders</a>
                             </div>
 
                         </div>

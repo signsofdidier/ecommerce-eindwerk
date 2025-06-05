@@ -147,7 +147,7 @@
 
                                         <div class=" shipping-address-area billing-area mt-4">
                                             <div class="minicart-btn-area d-flex align-items-center justify-content-between flex-wrap">
-                                                <a href="{{ url('/cart') }}" class="checkout-page-btn minicart-btn btn-secondary">BACK TO CART</a>
+                                                <a href="/cart" class="checkout-page-btn minicart-btn btn-secondary">BACK TO CART</a>
                                                 <button type="submit" class="checkout-page-btn minicart-btn btn-primary">PLACE ORDER</button>
                                             </div>
                                         </div>
@@ -173,7 +173,7 @@
                                     </div>
                                     <div class="product-info">
                                         <h2 class="product-title">
-                                            <a href="{{ url('/products') }}/{{ $item['slug'] }}">
+                                            <a href="/products/{{ $item['slug'] }}">
                                                 {{ $item['name'] }}
                                             </a>
                                         </h2>

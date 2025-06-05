@@ -27,7 +27,7 @@
                             {{-- Login knop voor gasten --}}
                             @guest
                                 <a class="d-flex align-items-center text-white text-decoration-none"
-                                   href="{{ url('/login') }}">
+                                   href="{{ url('/' . currentCompany()->slug . '/login') }}">
                                     {{-- User-icon --}}
                                     <svg class="me-1" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -68,7 +68,7 @@
 
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="{{ url('/' . currentCompany()->slug . '/my-orders') }}">
                                                 {{-- Profile-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
@@ -79,7 +79,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="{{ url('/' . currentCompany()->slug . '/my-orders') }}">
                                                 {{-- Orders-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M0 1.5A.5.5 0 0 1 .5 1h15a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-11zM1 2v10h14V2H1z"/>
@@ -92,7 +92,7 @@
 
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center text-danger py-2"
-                                               href="{{ url('/logout') }}">
+                                               href="{{ url('/' . currentCompany()->slug . '/logout') }}">
                                                 {{-- Logout-icon --}}
                                                 <svg class="me-2 text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h5.793l-1.147-1.146a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L12.293 4H6.5a.5.5 0 0 1-.5-.5z"/>
