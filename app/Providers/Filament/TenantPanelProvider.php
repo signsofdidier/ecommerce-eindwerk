@@ -26,11 +26,12 @@ class TenantPanelProvider extends PanelProvider
     {
         return $panel
             ->id('tenant')
+            ->path('companies/{tenant:slug}')
             ->tenant(Company::class)
             ->tenantMiddleware([
                 IdentifyTenant::class,
             ])
-            ->path('companies/{tenant:slug}')
+
             ->colors([
                 'primary' => Color::Amber,
             ])

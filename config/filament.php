@@ -88,7 +88,7 @@ return [
 
     'tenancy' => [
         'tenant_model' => \App\Models\Company::class,
-        'default_tenant_panel' => 'tenant',
+        //'default_tenant_panel' => 'tenant',
     ],
 
 ];
