@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Brand;
@@ -15,12 +17,21 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // USERS
-        User::create([
+        // 1. COMPANY
+        $company1 = Company::first() ?? Company::create([
+            'name' => 'Company 1',
+        ]);
+        $company2 = Company::where('name', 'Company 2')->first() ?? Company::create([
+            'name' => 'Company 2',
+        ]);
+
+        // 2. USERS
+        $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
         ]);
+
         User::create([
             'name' => 'Didier Vanassche',
             'email' => 'didier.v@hotmail.com',
@@ -37,7 +48,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // BRANDS
+        $admin->companies()->syncWithoutDetaching([$company1->id, $company2->id]);
+
+        // 3. BRANDS
         $brands = [
             'Designo',
             'SitWell',
@@ -45,14 +58,16 @@ class DatabaseSeeder extends Seeder
             'UrbanCraft',
             'VintageVibe'
         ];
+        $brandModels = [];
         foreach ($brands as $brand) {
-            Brand::create([
+            $brandModels[$brand] = Brand::create([
                 'name' => $brand,
                 'slug' => Str::slug($brand),
+                'company_id' => $company1->id,
             ]);
         }
 
-        // CATEGORIES
+        // 4. CATEGORIES
         $categories = [
             'Chairs',
             'Sofas',
@@ -62,14 +77,16 @@ class DatabaseSeeder extends Seeder
             'Cupboards',
             'Accessories'
         ];
+        $categoryModels = [];
         foreach ($categories as $cat) {
-            Category::create([
+            $categoryModels[$cat] = Category::create([
                 'name' => $cat,
                 'slug' => Str::slug($cat),
+                'company_id' => $company1->id,
             ]);
         }
 
-        // COLORS
+        // 5. COLORS
         $colors = [
             ['name' => 'Black',        'hex' => '#000000'],
             ['name' => 'White Broken', 'hex' => '#F5F5F5'],
@@ -78,145 +95,149 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Taupe',        'hex' => '#483C32'],
             ['name' => 'Walnut',       'hex' => '#77604E'],
         ];
+        $colorModels = [];
         foreach ($colors as $color) {
-            Color::create($color);
+            $colorModels[$color['name']] = Color::create([
+                ...$color,
+                'company_id' => $company1->id,
+            ]);
         }
 
-        // PRODUCTS DATA
+
+        // 6. PRODUCTS DATA
         $products = [
             [
                 'name' => 'Nordic Lounge Chair',
-                'brand_id' => 3,
-                'category_id' => 1,
+                'brand' => 'NordicHome',
+                'category' => 'Chairs',
                 'description' => 'Comfortable lounge chair with Scandinavian design, perfect for any modern interior.',
                 'price' => 199.99,
                 'is_active' => true,
                 'is_featured' => true,
                 'in_stock' => true,
                 'on_sale' => false,
-                'colors' => [1, 2, 5],
+                'color_names' => ['Black', 'White Broken', 'Taupe'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'UrbanCraft Coffee Table',
-                'brand_id' => 4,
-                'category_id' => 4,
+                'brand' => 'UrbanCraft',
+                'category' => 'Coffee Tables',
                 'description' => 'Modern coffee table with a metal frame and oak wood top.',
                 'price' => 349.00,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => true,
                 'on_sale' => true,
-                'colors' => [5, 6],
+                'color_names' => ['Taupe', 'Walnut'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Designo 3-Seat Sofa',
-                'brand_id' => 1,
-                'category_id' => 2,
+                'brand' => 'Designo',
+                'category' => 'Sofas',
                 'description' => 'Luxurious 3-seater sofa upholstered in soft fabric. Available in several trendy colors.',
                 'price' => 899.50,
                 'is_active' => true,
                 'is_featured' => true,
                 'in_stock' => true,
                 'on_sale' => true,
-                'colors' => [2, 3, 4],
+                'color_names' => ['White Broken', 'Turquoise', 'Green Lime'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'SitWell Dining Table',
-                'brand_id' => 2,
-                'category_id' => 3,
+                'brand' => 'SitWell',
+                'category' => 'Tables',
                 'description' => 'Sturdy dining table with a minimalist design, seats up to six people.',
                 'price' => 599.00,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => false,
                 'on_sale' => false,
-                'colors' => [1, 2, 5, 6],
+                'color_names' => ['Black', 'White Broken', 'Taupe', 'Walnut'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'VintageVibe Cabinet',
-                'brand_id' => 5,
-                'category_id' => 5,
+                'brand' => 'VintageVibe',
+                'category' => 'Cabinets',
                 'description' => 'Stylish cabinet in vintage style, ideal for your hallway or living room.',
                 'price' => 279.99,
                 'is_active' => true,
                 'is_featured' => true,
                 'in_stock' => true,
                 'on_sale' => false,
-                'colors' => [5, 6, 4],
+                'color_names' => ['Taupe', 'Walnut', 'Green Lime'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Taupe Serenity Armchair',
-                'brand_id' => 5,
-                'category_id' => 1,
+                'brand' => 'VintageVibe',
+                'category' => 'Chairs',
                 'description' => 'A cozy armchair in elegant taupe with walnut wooden legs. Perfect for reading nooks or as an accent chair.',
                 'price' => 269.00,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => true,
                 'on_sale' => true,
-                'colors' => [5, 6],
+                'color_names' => ['Taupe', 'Walnut'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Lime Green Modern Sofa',
-                'brand_id' => 2,
-                'category_id' => 2,
+                'brand' => 'SitWell',
+                'category' => 'Sofas',
                 'description' => 'Contemporary sofa with vibrant lime green fabric. Comfortable seating for your living room.',
                 'price' => 799.00,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => true,
                 'on_sale' => false,
-                'colors' => [4, 2],
+                'color_names' => ['Green Lime', 'White Broken'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Turquoise Dining Table',
-                'brand_id' => 3,
-                'category_id' => 3,
+                'brand' => 'NordicHome',
+                'category' => 'Tables',
                 'description' => 'Unique dining table with a smooth turquoise finish, perfect for a stylish and lively dining area.',
                 'price' => 689.50,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => false,
                 'on_sale' => false,
-                'colors' => [3, 2],
+                'color_names' => ['Turquoise', 'White Broken'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Minimalist Walnut Coffee Table',
-                'brand_id' => 4,
-                'category_id' => 4,
+                'brand' => 'UrbanCraft',
+                'category' => 'Coffee Tables',
                 'description' => 'A minimalist coffee table with a rich walnut top and sturdy black legs. Ideal for modern interiors.',
                 'price' => 325.00,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => true,
                 'on_sale' => true,
-                'colors' => [6, 1],
+                'color_names' => ['Walnut', 'Black'],
                 'shipping_cost' => 65.00,
             ],
             [
                 'name' => 'Oak & Taupe Storage Cabinet',
-                'brand_id' => 1,
-                'category_id' => 5,
+                'brand' => 'Designo',
+                'category' => 'Cabinets',
                 'description' => 'Functional storage cabinet combining oak and taupe for a timeless look. Plenty of space for your essentials.',
                 'price' => 499.99,
                 'is_active' => true,
                 'is_featured' => false,
                 'in_stock' => true,
                 'on_sale' => false,
-                'colors' => [5, 2],
+                'color_names' => ['Taupe', 'White Broken'],
                 'shipping_cost' => 65.00,
             ],
         ];
 
-        // JE EIGEN PLAATJES NAAR KEUZE (gewoon bestandsnamen!):
         $localImages = [
             'chairs'   => ['plantkast-1.jpg', 'plantkast-2.jpg', 'plantkast-3.jpg'],
             'sofas'    => ['zetel-1.jpg', 'zetel-2.jpg', 'zetel-3.jpg', 'zetel-4.jpg'],
@@ -228,7 +249,6 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $productData) {
             $name = strtolower($productData['name']);
-
             if (str_contains($name, 'chair')) {
                 $imgs = $localImages['chairs'];
             } elseif (str_contains($name, 'sofa')) {
@@ -240,18 +260,20 @@ class DatabaseSeeder extends Seeder
             } else {
                 $imgs = $localImages['default'];
             }
-
-            // Per product 1 tot 3 afbeeldingen (random aantal)
             $imgs = array_slice($imgs, 0, rand(1, count($imgs)));
-
-            // ALTIJD 'products/' VOOR PAD!
             $imgs = array_map(fn($img) => 'products/' . ltrim($img, '/'), $imgs);
+
+            $brandId = $brandModels[$productData['brand']]->id;
+            $categoryId = $categoryModels[$productData['category']]->id;
+            $colorIds = collect($productData['color_names'])
+                ->map(fn($name) => $colorModels[$name]->id)
+                ->toArray();
 
             $product = Product::create([
                 'name'        => $productData['name'],
                 'slug'        => Str::slug($productData['name']),
-                'brand_id'    => $productData['brand_id'],
-                'category_id' => $productData['category_id'],
+                'brand_id'    => $brandId,
+                'category_id' => $categoryId,
                 'images'      => $imgs,
                 'description' => $productData['description'],
                 'price'       => $productData['price'],
@@ -260,8 +282,16 @@ class DatabaseSeeder extends Seeder
                 'in_stock'    => $productData['in_stock'],
                 'on_sale'     => $productData['on_sale'],
                 'shipping_cost' => $productData['shipping_cost'],
+                'company_id' => $company1->id,
+
             ]);
-            $product->colors()->attach($productData['colors']);
+            $product->colors()->attach($colorIds);
         }
+
+        Setting::create([
+            'company_id' => $company1->id,
+            'free_shipping_threshold' => 1000,
+        ]);
+
     }
 }
