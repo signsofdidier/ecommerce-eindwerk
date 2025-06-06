@@ -7,7 +7,7 @@
                         <h1 class="fw-bold mb-3" style="color: #2c5aa0;">Sign up</h1>
                         <p class="text-muted">
                             Already have an account?
-                            <a href="/login" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign in here</a>
+                            <a href="{{ route('login', ['company' => \App\Services\TenantService::slug()]) }}" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign in here</a>
                         </p>
                     </div>
 

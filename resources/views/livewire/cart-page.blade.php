@@ -24,7 +24,12 @@
                                             </div>
                                         </td>
                                         <td class="cart-item-details">
-                                            <h2 class="product-title"><a href="{{ url('/products') }}/{{ $item['slug'] }}">{{ $item['name'] }}</a></h2>
+                                            <h2 class="product-title">
+                                                <a href="
+{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $item['slug']]) }}">
+                                                    {{ $item['name'] }}
+                                                </a>
+                                            </h2>
 
                                             {{-- COLOR --}}
                                             @if(! empty($item['color_name']))
@@ -86,7 +91,8 @@
                                     <p class="shipping_text">Shipping, taxes & discount calculated at checkout</p>
                                     <div class="d-flex justify-content-center mt-4">
                                         @if($cart_items)
-                                            <a href="{{ url('/checkout') }}" class="position-relative btn-primary text-uppercase">
+                                            <a href="{{ route('checkout', ['company' => \App\Services\TenantService::slug()]) }}
+" class="position-relative btn-primary text-uppercase">
                                                 Proceed to checkout
                                             </a>
                                         @else

@@ -8,6 +8,7 @@ use App\Mail\OrderPlacedMail;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Setting;
+use App\Services\TenantService;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -118,8 +119,8 @@ class CheckoutPage extends Component
                 'customer_email' => auth()->user()->email,
                 'line_items' => $line_items,
                 'mode' => 'payment',
-                'success_url' => route('success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('cancel'),
+                'success_url' => route('success', ['company' => TenantService::slug()]) . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('cancel', ['company' => TenantService::slug()]),
             ]);
 
             // Sla de Stripe Transaction ID op in het order
@@ -127,7 +128,7 @@ class CheckoutPage extends Component
             $redirect_url = $sessionCheckout->url;
 
         }else {
-            $redirect_url = route('success');
+            $redirect_url = route('success', ['company' => TenantService::slug()]);
         }
 
         $order->save();

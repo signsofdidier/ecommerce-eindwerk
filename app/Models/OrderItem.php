@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TenantService;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -58,8 +59,8 @@ class OrderItem extends Model
             if (empty($orderItem->company_id)) {
                 if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
                     $orderItem->company_id = \Filament\Facades\Filament::getTenant()->id;
-                } elseif (function_exists('currentCompany') && currentCompany()) {
-                    $orderItem->company_id = currentCompany()->id;
+                } elseif (TenantService::current()) {
+                    $orderItem->company_id = TenantService::current()->id;
                 }
             }
         });
@@ -69,8 +70,8 @@ class OrderItem extends Model
                 $query->where('company_id', \Filament\Facades\Filament::getTenant()->id);
                 return;
             }
-            if (function_exists('currentCompany') && currentCompany()) {
-                $query->where('company_id', currentCompany()->id);
+            if (TenantService::current()) {
+                $query->where('company_id', \App\Services\TenantService::current()->id);
             }
         });
     }

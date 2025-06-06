@@ -174,7 +174,7 @@
                                     </div>
                                     <div class="product-info">
                                         <h2 class="product-title">
-                                            <a href="{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $item['slug']]) }}">
+                                            <a href="{{ url('/products') }}/{{ $item['slug'] }}">
                                                 {{ $item['name'] }}
                                             </a>
                                         </h2>

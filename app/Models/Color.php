@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TenantService;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,8 +43,8 @@ class Color extends Model
             if (empty($color->company_id)) {
                 if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
                     $color->company_id = \Filament\Facades\Filament::getTenant()->id;
-                } elseif (function_exists('currentCompany') && currentCompany()) {
-                    $color->company_id = currentCompany()->id;
+                } elseif (TenantService::current()) {
+                    $color->company_id = TenantService::current()->id;
                 }
             }
         });
@@ -53,8 +54,8 @@ class Color extends Model
                 $query->where('company_id', \Filament\Facades\Filament::getTenant()->id);
                 return;
             }
-            if (function_exists('currentCompany') && currentCompany()) {
-                $query->where('company_id', currentCompany()->id);
+            if (TenantService::current()) {
+                $query->where('company_id', \App\Services\TenantService::current()->id);
             }
         });
     }

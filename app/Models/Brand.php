@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TenantService;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,8 +44,8 @@ class Brand extends Model
             if (empty($brand->company_id)) {
                 if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
                     $brand->company_id = \Filament\Facades\Filament::getTenant()->id;
-                } elseif (function_exists('currentCompany') && currentCompany()) {
-                    $brand->company_id = currentCompany()->id;
+                } elseif (TenantService::current()) {
+                    $brand->company_id = TenantService::current()->id;
                 }
             }
         });
@@ -54,8 +55,8 @@ class Brand extends Model
                 $query->where('company_id', \Filament\Facades\Filament::getTenant()->id);
                 return;
             }
-            if (function_exists('currentCompany') && currentCompany()) {
-                $query->where('company_id', currentCompany()->id);
+            if (TenantService::current()) {
+                $query->where('company_id', \App\Services\TenantService::current()->id);
             }
         });
     }

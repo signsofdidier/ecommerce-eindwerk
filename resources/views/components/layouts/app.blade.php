@@ -138,31 +138,31 @@
                     <ul class="main-menu list-unstyled">
                         <li class="menu-list-item nav-item active">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link active" href="{{ url('/') }}">
+                                <a wire:navigate class="nav-link active" href="{{ route('home', ['company' => \App\Services\TenantService::slug()]) }}">
                                     Home
                                 </a>
                             </div>
                         </li>
                         <li class="menu-list-item nav-item has-megamenu">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link" href="{{ url('/products') }}">
+                                <a wire:navigate class="nav-link" href="{{ route('products', ['company' => \App\Services\TenantService::slug()]) }}">
                                     Products
                                 </a>
                             </div>
                         </li>
-                        <li class="menu-list-item nav-item">
-                            <a wire:navigate class="nav-link" href="{{ url('/blog') }}">Blog</a>
+                        {{--<li class="menu-list-item nav-item">
+                            <a wire:navigate class="nav-link" href="{{ route('blog', ['company' => \App\Services\TenantService::slug()]) }}">Blog</a>
                         </li>
                         <li class="menu-list-item nav-item has-dropdown">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link active" href="{{ url('/about-us') }}">
+                                <a wire:navigate class="nav-link active" href="{{ route('about-us', ['company' => \App\Services\TenantService::slug()]) }}">
                                     About Us
                                 </a>
                             </div>
                         </li>
                         <li class="menu-list-item nav-item">
-                            <a wire:navigate class="nav-link" href="/contact">Contact</a>
-                        </li>
+                            <a wire:navigate class="nav-link" href="{{ route('contact', ['company' => \App\Services\TenantService::slug()]) }}">Contact</a>
+                        </li>--}}
                     </ul>
                 </nav>
                 <ul class="utility-menu list-unstyled">
@@ -181,7 +181,7 @@
                         </a>
                     </li>
                     <li class="utilty-menu-item">
-                        <a class="announcement-login announcement-text" href="{{ url('/login') }}">
+                        <a class="announcement-login announcement-text" href="{{ route('login', ['company' => \App\Services\TenantService::slug()]) }}">
                                 <span class="utilty-icon-wrapper">
                                     <svg class="icon icon-user" width="24" height="24" viewBox="0 0 10 11" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">

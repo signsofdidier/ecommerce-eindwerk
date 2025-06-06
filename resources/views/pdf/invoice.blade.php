@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+@php
+    use App\Services\TenantService;
+    $company = TenantService::current();
+@endphp
+
+
+    <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -102,7 +108,8 @@
 @endphp
 
 <div class="header">
-    <img src="{{ public_path('assets/img/logo-white.png') }}" alt="Shop Logo">
+    <img src="{{ public_path('assets/img/logo-white.png') }}" alt="{{ $company->name }}">
+    {{--<img src="{{ $company->logo_url }}" alt="{{ $company->name }}">--}}
     <h1>Order Confirmation #{{ $order->id }}</h1>
     <p>Payment Method: <strong>{{ ucfirst($order->payment_method) }}</strong></p>
 </div>

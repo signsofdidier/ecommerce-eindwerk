@@ -83,7 +83,8 @@ class ResetPasswordPage extends Component
         if ($status === Password::PASSWORD_RESET) {
             // Succesvol: geef feedback en stuur gebruiker naar loginpagina
             session()->flash('status', 'Password reset successfully. You can now log in.');
-            return redirect()->to('/login');
+            return redirect()->route('login', ['company' => \App\Services\TenantService::slug()]);
+
         } else {
             // Mislukt: toon een foutmelding bij het emailveld
             $this->addError('email', __($status));

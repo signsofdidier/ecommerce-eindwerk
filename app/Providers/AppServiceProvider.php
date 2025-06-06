@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\SetFrontendCompany;
 use App\Models\Company;
 use App\Observers\CompanyObserver;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        require_once app_path('helpers.php');
+
     }
 
     /**

@@ -16,11 +16,7 @@
                                 <img class="mini-img" src="{{ url('storage', $item['image']) }}" alt="{{ $item['name'] }}">
                             </div>
                             <div class="product-info">
-                                <h2 class="product-title">
-                                    <a href="{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $item['slug']]) }}">
-                                        {{ $item['name'] }}
-                                    </a>
-                                </h2>
+                                <h2 class="product-title"><a href="{{ url('/products') }}/{{ $item['slug'] }}">{{ $item['name'] }}</a></h2>
                                 {{--<p class="product-vendor">XS / Dove Gray</p>--}}
                                 <div class="misc d-flex align-items-end justify-content-between">
                                     <div class="quantity d-flex align-items-center justify-content-between">

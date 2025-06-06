@@ -44,8 +44,8 @@ class Setting extends Model
             if (empty($setting->company_id)) {
                 if (class_exists(\Filament\Facades\Filament::class) && \Filament\Facades\Filament::getTenant()) {
                     $setting->company_id = \Filament\Facades\Filament::getTenant()->id;
-                } elseif (function_exists('currentCompany') && currentCompany()) {
-                    $setting->company_id = currentCompany()->id;
+                } elseif (\App\Services\TenantService::current()) {
+                    $setting->company_id = \App\Services\TenantService::current()->id;
                 }
             }
         });
@@ -55,8 +55,8 @@ class Setting extends Model
                 $query->where('company_id', \Filament\Facades\Filament::getTenant()->id);
                 return;
             }
-            if (function_exists('currentCompany') && currentCompany()) {
-                $query->where('company_id', currentCompany()->id);
+            if (\App\Services\TenantService::current()) {
+                $query->where('company_id', \App\Services\TenantService::current()->id);
             }
         });
     }

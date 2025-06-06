@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Order;
+use App\Services\TenantService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -22,11 +23,18 @@ class InvoicePaidMail extends Mailable
     // PDF IN MAIL
     public function build()
     {
-        $pdf = Pdf::loadView('pdf.invoice', ['order' => $this->order]);
+        $company = TenantService::current(); // Haalt de actieve tenant op
+        $pdf = Pdf::loadView('pdf.invoice', [
+            'order' => $this->order,
+            'company' => $company,
+        ]);
 
-        // Stuurt een e-mail met een pdf attachement
-        return $this->subject('Your Order #' . $this->order->id . ' is confirmed')
+        return $this->subject('Your order at ' . $company->name . ' is confirmed')
             ->view('emails.invoice-paid')
+            ->with([
+                'order' => $this->order,
+                'company' => $company,
+            ])
             ->attachData($pdf->output(), 'invoice-order-' . $this->order->id . '.pdf', [
                 'mime' => 'application/pdf',
             ]);

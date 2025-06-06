@@ -64,7 +64,7 @@ class ProductResource extends Resource
                             ->disabled()
                             ->dehydrated()
                             // Zorg dat de slug uniek is in de 'products' tabel, maar negeer het huidige record bij het bewerken
-                            ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', auth()->user()?->currentCompany?->id)),
+                            ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', Filament::getTenant()?->id)),
 
                         Select::make('colors')
                             ->multiple()

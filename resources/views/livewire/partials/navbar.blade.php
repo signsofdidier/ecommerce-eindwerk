@@ -23,10 +23,9 @@
                             {{-- Login knop voor gasten --}}
                             @guest
                                 <a class="d-flex align-items-center text-white text-decoration-none"
-                                   href="{{ url('/login') }}">
+                                   href="{{ route('login', ['company' => \App\Services\TenantService::slug()]) }}">
                                     {{-- User-icon --}}
-                                    <svg class="me-1" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                    <svg class="me-1" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                                         <path fill-rule="evenodd" d="M8 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z"/>
                                     </svg>
                                     <span class="fw-semibold">Login</span>
@@ -64,7 +63,7 @@
 
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="{{ route('my-orders', ['company' => \App\Services\TenantService::slug()]) }}">
                                                 {{-- Profile-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
@@ -75,7 +74,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="{{ route('my-orders', ['company' => \App\Services\TenantService::slug()]) }}">
                                                 {{-- Orders-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M0 1.5A.5.5 0 0 1 .5 1h15a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-11zM1 2v10h14V2H1z"/>
@@ -87,9 +86,23 @@
                                         <li><hr class="dropdown-divider"></li>
 
                                         <li>
+                                            <form method="POST" action="{{ route('logout', ['company' => \App\Services\TenantService::slug()]) }}">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item d-flex align-items-center text-danger py-2">
+                                                    {{-- Logout-icon --}}
+                                                    <svg class="me-2 text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h5.793l-1.147-1.146a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L12.293 4H6.5a.5.5 0 0 1-.5-.5z"/>
+                                                        <path fill-rule="evenodd" d="M13 8a.5.5 0 0 1-.5.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5H12.5A.5.5 0 0 1 13 8z"/>
+                                                    </svg>
+                                                    Logout
+                                                </button>
+                                            </form>
+                                        </li>
+
+                                        {{--<li>
                                             <a class="dropdown-item d-flex align-items-center text-danger py-2"
-                                               href="{{ url('/logout') }}">
-                                                {{-- Logout-icon --}}
+                                               href="{{ route('logout', ['company' => \App\Services\TenantService::slug()]) }}">
+                                                --}}{{-- Logout-icon --}}{{--
                                                 <svg class="me-2 text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h5.793l-1.147-1.146a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L12.293 4H6.5a.5.5 0 0 1-.5-.5z"/>
                                                     <path fill-rule="evenodd" d="M13 8a.5.5 0 0 1-.5.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5H12.5A.5.5 0 0 1 13 8z"/>
@@ -99,7 +112,7 @@
                                             <form id="logout-form" action="/logout" method="POST" class="d-none">
                                                 @csrf
                                             </form>
-                                        </li>
+                                        </li>--}}
                                     </ul>
                                 </div>
                             @endguest
@@ -133,7 +146,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-4">
                         <div class="header-logo">
-                            <a href="/" class="logo-main">
+                            <a href="{{ route('home', ['company' => \App\Services\TenantService::slug()]) }}" class="logo-main">
                                 <img src="{{ asset('assets/img/logo.png') }}" loading="lazy" alt="bisum">
                                 {{--<h2 class="text-bold">K(L)ASSE</h2>--}}
                             </a>
@@ -145,28 +158,28 @@
                         <nav class="site-navigation">
                             <ul class="main-menu list-unstyled justify-content-center">
                                 <li class="menu-list-item nav-item {{ request()->is('/') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/') }}">
+                                    <a wire:navigate class="nav-link" href="{{ route('home', ['company' => \App\Services\TenantService::slug()]) }}">
                                         Home
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('products') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/products') }}">
+                                    <a wire:navigate class="nav-link" href="{{ route('products', ['company' => \App\Services\TenantService::slug()]) }}">
                                         Products
                                     </a>
                                 </li>
-                                <li class="menu-list-item nav-item {{ request()->is('blog') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/blog') }}">
+                                {{--<li class="menu-list-item nav-item {{ request()->is('blog') ? 'active' : '' }}">
+                                    <a wire:navigate class="nav-link" href="{{ route('blog', ['company' => \App\Services\TenantService::slug()]) }}">
                                         Blog
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('about-us') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/about-us') }}">
+                                    <a wire:navigate class="nav-link" href="{{ route('about-us', ['company' => \App\Services\TenantService::slug()]) }}">
                                         About Us
                                     </a>
                                 </li>
                                 <li wire:navigate class="menu-list-item nav-item {{ request()->is('contact') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ url('/contact') }}">Contact</a>
-                            </li>
+                                    <a class="nav-link" href="{{ route('contact', ['company' => \App\Services\TenantService::slug()]) }}">Contact</a>
+                            </li>--}}
                         </ul>
                     </nav>
                 </div>

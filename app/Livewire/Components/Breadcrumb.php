@@ -20,16 +20,19 @@ class Breadcrumb extends Component
         $breadcrumbs = [];
 
         $url = '';
-        foreach ($segments as $segment) {
+
+        foreach ($segments as $index => $segment) {
             $url .= '/' . $segment;
+
             $breadcrumbs[] = [
-                'name' => ucfirst(str_replace('-', ' ', $segment)),
+                'name' => $index === 0 ? 'Home' : ucfirst(str_replace('-', ' ', $segment)),
                 'url' => $url,
             ];
         }
 
         return $breadcrumbs;
     }
+
 
     public function render()
     {

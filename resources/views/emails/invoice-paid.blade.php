@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+@php
+    $company = $company ?? \App\Services\TenantService::current();
+@endphp
+
+
+    <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -44,6 +49,9 @@
 </head>
 <body>
 <div class="container">
+    {{--<img src="{{ asset('storage/' . $company->logo_path) }}" alt="{{ $company->name }}" style="max-width: 150px; margin-bottom: 20px;">--}}
+
+
     <h2 class="header">Thank you for your order!</h2>
 
     <p>Hello {{ $order->user->name }},</p>
@@ -70,7 +78,8 @@
                 <td style="padding: 8px;">
                     <div style="display: flex; align-items: center;">
                         <img src="{{ $message->embed(public_path('storage/' . $item->product->images[0])) }}" alt="product" style="width: 40px; height: auto; margin-right: 10px;">
-                        <a href="{{ url('/products/' . $item->product->slug) }}" style="color: #00234D; text-decoration: none;">
+                        <a href="{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $item->product->slug]) }}" style="color: #00234D; text-decoration: none;">
+
                             {{ $item->product->name }}
 
                         </a>
@@ -137,18 +146,22 @@
     </p>
 
     <p style="text-align: center; margin: 30px 0;">
-        <a href="{{ url('/my-orders') }}" class="btn">View My Orders</a>
+        <a href="{{ route('my-orders', ['company' => \App\Services\TenantService::slug()]) }}" class="btn">View My Orders</a>
     </p>
 
     <p>Your invoice is attached as a PDF to this email.</p>
 
     <p>We’ll notify you again when your order is shipped.</p>
 
-    <p style="margin-top: 40px;">Kind regards,<br><strong>The E-commerce Team</strong></p>
+    <p style="margin-top: 40px;">
+        Kind regards,<br>
+        <strong>{{ $company->name }}</strong>
+    </p>
 </div>
 
 <div class="footer">
-    &copy; {{ date('Y') }} Your Company. All rights reserved.
+    &copy; {{ date('Y') }} {{ $company->name }}. All rights reserved.
 </div>
+
 </body>
 </html>

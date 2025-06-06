@@ -23,7 +23,8 @@ class LoginPage extends Component
             return;
         }
 
-        return redirect()->intended();
+        return redirect()->intended(route('home', ['company' => \App\Services\TenantService::slug()]));
+
     }
 
     public function render()

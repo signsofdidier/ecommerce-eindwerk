@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
+use App\Services\TenantService;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -55,7 +56,8 @@ class CategoryResource extends Resource
                                 ->dehydrated()
                                 // De kolom die uniek moet zijn (bv 'slug' in de categories tabel)
                                 // Negeer het huidige record bij het controleren (belangrijk bij bewerken)
-                                ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', auth()->user()?->currentCompany?->id))
+                                ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', TenantService::current()?->id))
+
                         ]),
                     FileUpload::make('image')
                         ->image()

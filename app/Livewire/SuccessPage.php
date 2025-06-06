@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Order;
+use App\Services\TenantService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -43,7 +44,7 @@ class SuccessPage extends Component
                 $latest_order->save();
 
                 // Redirect naar een annuleringspagina
-                return redirect('/cancel');
+                return redirect()->route('cancel', ['company' => TenantService::slug()]);
             }
 
             // Als de betaling geslaagd is:

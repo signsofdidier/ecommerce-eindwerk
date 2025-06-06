@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Order;
+use App\Services\TenantService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -19,16 +20,25 @@ class OrderPlacedMail extends Mailable
         $this->order = $order;
     }
 
-    // PDF IN MAIL
+
     public function build()
     {
-        $pdf = Pdf::loadView('pdf.order-placed', ['order' => $this->order]);
+        $company = TenantService::current();
 
-        // Stuurt een e-mail met een pdf attachement
-        return $this->subject('Your Order #' . $this->order->id . ' was placed successfully')
+        $pdf = Pdf::loadView('pdf.order-placed', [
+            'order' => $this->order,
+            'company' => $company,
+        ]);
+
+        return $this->subject('Your order at ' . $company->name . ' was placed successfully')
             ->view('emails.order-placed')
+            ->with([
+                'order' => $this->order,
+                'company' => $company,
+            ])
             ->attachData($pdf->output(), 'order-confirmation-' . $this->order->id . '.pdf', [
                 'mime' => 'application/pdf',
             ]);
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TenantService;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -79,8 +80,8 @@ class Product extends Model
                     $product->company_id = Filament::getTenant()->id;
                 }
                 // Dan: frontend context
-                elseif (function_exists('currentCompany') && currentCompany()) {
-                    $product->company_id = currentCompany()->id;
+                elseif (TenantService::current()) {
+                    $product->company_id = TenantService::current()->id;
                 }
             }
         });
@@ -93,8 +94,8 @@ class Product extends Model
                 return;
             }
             // Frontend context
-            if (function_exists('currentCompany') && currentCompany()) {
-                $query->where('company_id', currentCompany()->id);
+            if (TenantService::current()) {
+                $query->where('company_id', \App\Services\TenantService::current()->id);
             }
         });
     }

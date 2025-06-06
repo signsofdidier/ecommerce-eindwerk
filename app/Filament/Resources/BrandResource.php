@@ -55,7 +55,8 @@ class BrandResource extends Resource
                                 ->dehydrated()
                                 // De kolom die uniek moet zijn (bv 'slug' in de categories tabel)
                                 // Negeer het huidige record bij het controleren (belangrijk bij bewerken)
-                                ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', auth()->user()?->currentCompany?->id)),
+                                ->unique(ignoreRecord: true, modifyRuleUsing: fn($rule) => $rule->where('company_id', Filament::getTenant()?->id))
+                            ,
                         ]),
 
                     FileUpload::make('image')
