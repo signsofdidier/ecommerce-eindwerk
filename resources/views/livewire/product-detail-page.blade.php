@@ -448,14 +448,16 @@
                         <div class="new-item" data-aos="fade-up" data-aos-duration="300">
                                 <div class="product-card">
                                     <div class="product-card-img">
-                                        <a class="product-hover-zoom" href="{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $featured->slug]) }}
+                                        <a class="product-hover-zoom" href="{{ route('product.show', ['company' => $company, 'slug' => $product->slug])
+ }}
 ">
                                             <img class="primary-img" src="{{ url('storage', $featured->images[0]) }}"
                                                  alt="product-img">
                                         </a>
 
                                         <div class="product-card-action product-card-action-2">
-                                            <a href="{{ route('product.show', ['company' => \App\Services\TenantService::slug(), 'slug' => $featured->slug]) }}
+                                            <a href="{{ route('product.show', ['company' => $company, 'slug' => $product->slug])
+ }}
 " class="quickview-btn btn-primary">VIEW</a>
                                             <button wire:click.prevent="addToCart({{ $featured->id }})" type="button" class="addtocart-btn btn-primary">
                                                 ADD TO CART

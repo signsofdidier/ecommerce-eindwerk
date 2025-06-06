@@ -94,7 +94,7 @@
 
 <body>
 
-@livewire('partials.navbar')
+@livewire('partials.navbar', ['slug' => \App\Services\TenantService::slug()])
 
 <div class="body-wrapper">
 
