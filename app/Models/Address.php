@@ -47,7 +47,10 @@ class Address extends Model
         });
 
         // dit legt de relaties met de tenancy
-        static::addGlobalScope(new TenantScope);
+        // Als een superadmin is ingelogd, dan géén multitenant-filter toepassen zodat die alles kan zien
+        if (!auth()->check() || !auth()->user()->is_superadmin) {
+            static::addGlobalScope(new TenantScope);
+        }
     }
 
 
