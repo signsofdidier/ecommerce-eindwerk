@@ -44,7 +44,7 @@
                                     <div class="col-lg-4 col-md-6 col-6" wire:key="{{ $product->id }}">
                                         <div class="product-card">
                                             <div class="product-card-img">
-                                                <a class="product-hover-zoom" href="{{ url('/products') }}/{{ $product->slug }}">
+                                                <a class="product-hover-zoom" href="{{ tenant_url('products') }}/{{ $product->slug }}">
                                                     <img class="primary-img" src="{{ url('storage', $product->images[0]) }}"
                                                          alt="product-img">
                                                 </a>
@@ -94,7 +94,7 @@
 
                                                 {{-- PRODUCT TITLE --}}
                                                 <h3 class="product-card-title">
-                                                    <a href="{{ url('/products') }}/{{ $product->slug }}">{{ $product->name }}</a>
+                                                    <a href="{{ tenant_url('products') }}/{{ $product->slug }}">{{ $product->name }}</a>
                                                 </h3>
 
                                                 {{-- PRODUCT PRICE --}}

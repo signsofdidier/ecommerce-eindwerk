@@ -7,7 +7,7 @@
                         <h1 class="fw-bold mb-3" style="color: #2c5aa0;">Sign in</h1>
                         <p class="text-muted">
                             Don't have an account?
-                            <a href="/register" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign up here</a>
+                            <a href="{{ tenant_url('register') }}" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign up here</a>
                         </p>
                     </div>
 
@@ -40,7 +40,7 @@
                             <div class="col-md-12 mb-4">
                                 <div class="d-flex justify-content-between">
                                     <label for="password" class="form-label text-dark fw-semibold">Password</label>
-                                    <a href="/forgot" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Forgot password?</a>
+                                    <a href="{{ tenant_url('forgot') }}" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Forgot password?</a>
                                 </div>
                                 <div class="position-relative">
                                     <input type="password"
@@ -69,7 +69,7 @@
                         </button>
 
                         <!-- Create Account Button -->
-                        <a href="/register"
+                        <a href="{{ tenant_url('register') }}"
                            class="btn w-100 fw-semibold mt-3"
                            style="border: 2px solid #2c5aa0; border-radius: 8px; font-size: 1.1rem; color: #2c5aa0; background: #ffffff; transition: all 0.3s ease;"
                            onmouseover="this.style.background='#2c5aa0'; this.style.color='#ffffff';"

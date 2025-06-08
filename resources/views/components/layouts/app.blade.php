@@ -138,31 +138,31 @@
                     <ul class="main-menu list-unstyled">
                         <li class="menu-list-item nav-item active">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link active" href="{{ url('/') }}">
+                                <a wire:navigate class="nav-link active" href="{{ tenant_url() }}">
                                     Home
                                 </a>
                             </div>
                         </li>
                         <li class="menu-list-item nav-item has-megamenu">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link" href="{{ url('/products') }}">
+                                <a wire:navigate class="nav-link" href="{{ tenant_url('products') }}">
                                     Products
                                 </a>
                             </div>
                         </li>
-                        <li class="menu-list-item nav-item">
-                            <a wire:navigate class="nav-link" href="{{ url('/blog') }}">Blog</a>
+                       {{-- <li class="menu-list-item nav-item">
+                            <a wire:navigate class="nav-link" href="{{ tenant_url('blog') }}">Blog</a>
                         </li>
                         <li class="menu-list-item nav-item has-dropdown">
                             <div class="mega-menu-header">
-                                <a wire:navigate class="nav-link active" href="{{ url('/about-us') }}">
+                                <a wire:navigate class="nav-link active" href="{{ tenant_url('about-us') }}">
                                     About Us
                                 </a>
                             </div>
                         </li>
                         <li class="menu-list-item nav-item">
-                            <a wire:navigate class="nav-link" href="/contact">Contact</a>
-                        </li>
+                            <a wire:navigate class="nav-link" href="{{ tenant_url('contact') }}">Contact</a>
+                        </li>--}}
                     </ul>
                 </nav>
                 <ul class="utility-menu list-unstyled">
@@ -181,7 +181,7 @@
                         </a>
                     </li>
                     <li class="utilty-menu-item">
-                        <a class="announcement-login announcement-text" href="{{ url('/login') }}">
+                        <a class="announcement-login announcement-text" href="{{ tenant_url('products') }}">
                                 <span class="utilty-icon-wrapper">
                                     <svg class="icon icon-user" width="24" height="24" viewBox="0 0 10 11" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">

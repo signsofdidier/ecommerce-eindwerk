@@ -7,7 +7,7 @@
                         <h1 class="fw-bold mb-3" style="color: #2c5aa0;">Forgot password?</h1>
                         <p class="text-muted">
                             Remember your password?
-                            <a href="/login" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign in here</a>
+                            <a href="{{ tenant_url('login') }}" class="text-decoration-none fw-semibold" style="color: #2c5aa0;">Sign in here</a>
                         </p>
                     </div>
 

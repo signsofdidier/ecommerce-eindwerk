@@ -70,7 +70,7 @@
                 <td style="padding: 8px;">
                     <div style="display: flex; align-items: center;">
                         <img src="{{ $message->embed(public_path('storage/' . $item->product->images[0])) }}" alt="product" style="width: 40px; height: auto; margin-right: 10px;">
-                        <a href="{{ url('/products/' . $item->product->slug) }}" style="color: #00234D; text-decoration: none;">
+                        <a href="{{ tenant_url('products/' . $item->product->slug) }}" style="color: #00234D; text-decoration: none;">
                             {{ $item->product->name }}
 
                         </a>
@@ -137,7 +137,7 @@
     </p>
 
     <p style="text-align: center; margin: 30px 0;">
-        <a href="{{ url('/my-orders') }}" class="btn">View My Orders</a>
+        <a href="{{ tenant_url('my-orders') }}" class="btn">View My Orders</a>
     </p>
 
     <p>Your invoice is attached as a PDF to this email.</p>

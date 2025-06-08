@@ -23,7 +23,7 @@
                             {{-- Login knop voor gasten --}}
                             @guest
                                 <a class="d-flex align-items-center text-white text-decoration-none"
-                                   href="{{ url('/login') }}">
+                                   href="{{ tenant_url('login') }}">
                                     {{-- User-icon --}}
                                     <svg class="me-1" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -64,7 +64,7 @@
 
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="#">
                                                 {{-- Profile-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
@@ -75,7 +75,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center py-2"
-                                               href="{{ url('/my-orders') }}">
+                                               href="{{ tenant_url('my-orders') }}">
                                                 {{-- Orders-icon --}}
                                                 <svg class="me-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M0 1.5A.5.5 0 0 1 .5 1h15a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-11zM1 2v10h14V2H1z"/>
@@ -88,7 +88,7 @@
 
                                         <li>
                                             <a class="dropdown-item d-flex align-items-center text-danger py-2"
-                                               href="{{ url('/logout') }}">
+                                               href="{{ tenant_url('logout') }}">
                                                 {{-- Logout-icon --}}
                                                 <svg class="me-2 text-danger" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h5.793l-1.147-1.146a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L12.293 4H6.5a.5.5 0 0 1-.5-.5z"/>
@@ -96,28 +96,13 @@
                                                 </svg>
                                                 Logout
                                             </a>
-                                            <form id="logout-form" action="/logout" method="POST" class="d-none">
-                                                @csrf
+                                            <form id="logout-form" action="{{ url(request()->route('company') . '/logout') }}" method="POST" class="d-none">
+                                            @csrf
                                             </form>
                                         </li>
                                     </ul>
                                 </div>
                             @endguest
-
-
-                            {{-- <span class="separator-login d-flex px-3">
-                                         <svg width="2" height="9" viewBox="0 0 2 9" fill="none"
-                                              xmlns="http://www.w3.org/2000/svg">
-                                             <path opacity="0.4" d="M1 0.5V8.5" stroke="#FEFEFE" stroke-linecap="round" />
-                                         </svg>
-                                     </span>--}}
-                            {{--<div class="currency-wrapper">
-                                <button type="button" class="currency-btn btn-reset text-white"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="flag" src="assets/img/flag/eur.jpg" alt="img">
-                                    <span>EUR</span>
-                                </button>
-                            </div>--}}
                         </div>
                     </div>
                 </div>
@@ -133,7 +118,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-4">
                         <div class="header-logo">
-                            <a href="/" class="logo-main">
+                            <a href="{{ tenant_url() }}" class="logo-main">
                                 <img src="{{ asset('assets/img/logo.png') }}" loading="lazy" alt="bisum">
                                 {{--<h2 class="text-bold">K(L)ASSE</h2>--}}
                             </a>
@@ -145,28 +130,28 @@
                         <nav class="site-navigation">
                             <ul class="main-menu list-unstyled justify-content-center">
                                 <li class="menu-list-item nav-item {{ request()->is('/') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/') }}">
+                                    <a wire:navigate class="nav-link" href="{{ tenant_url() }}">
                                         Home
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('products') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/products') }}">
+                                    <a wire:navigate class="nav-link" href="{{ tenant_url('products') }}">
                                         Products
                                     </a>
                                 </li>
-                                <li class="menu-list-item nav-item {{ request()->is('blog') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/blog') }}">
+                                {{--<li class="menu-list-item nav-item {{ request()->is('blog') ? 'active' : '' }}">
+                                    <a wire:navigate class="nav-link" href="{{ tenant_url('blog') }}">
                                         Blog
                                     </a>
                                 </li>
                                 <li class="menu-list-item nav-item {{ request()->is('about-us') ? 'active' : '' }}">
-                                    <a wire:navigate class="nav-link" href="{{ url('/about-us') }}">
+                                    <a wire:navigate class="nav-link" href="{{ tenant_url('about-us') }}">
                                         About Us
                                     </a>
                                 </li>
                                 <li wire:navigate class="menu-list-item nav-item {{ request()->is('contact') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ url('/contact') }}">Contact</a>
-                                </li>
+                                    <a class="nav-link" href="{{ tenant_url('contact') }}">Contact</a>
+                                </li>--}}
                             </ul>
                     </nav>
                 </div>

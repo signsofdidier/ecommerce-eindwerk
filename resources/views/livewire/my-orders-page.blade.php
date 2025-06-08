@@ -40,8 +40,8 @@
                                     </div>
                                     <!-- Actions -->
                                     <div class="col-md-4 text-md-end">
-                                        <a href="{{ url('/my-orders') }}/{{ $order->id }}" class="btn btn-sm btn-outline-secondary me-2">Details</a>
-                                        <a href="{{ url('/my-orders') }}/{{ $order->id }}/invoice" class="btn btn-sm btn-outline-secondary">Download PDF</a>
+                                        <a href="{{ tenant_url('my-orders/' . $order->id) }}" class="btn btn-sm btn-outline-secondary me-2">Details</a>
+                                        <a href="{{ tenant_url('my-orders/' . $order->id . '/invoice') }}" class="btn btn-sm btn-outline-secondary">Download PDF</a>
                                     </div>
                                 </div>
                             </div>
@@ -110,8 +110,8 @@
                                     </td>
                                     <td class="align-middle">{{ Number::currency($order->grand_total, 'EUR') }}</td>
                                     <td class="align-middle text-end">
-                                        <a href="/my-orders/{{ $order->id }}" class="btn btn-sm btn-outline-primary me-2">View Details</a>
-                                        <a href="/my-orders/{{ $order->id }}/invoice" class="btn btn-sm btn-outline-secondary">Download PDF</a>
+                                        <a href="{{ tenant_url('my-orders/' . $order->id) }}" class="btn btn-sm btn-outline-primary me-2">View Details</a>
+                                        <a href="{{ tenant_url('my-orders/' . $order->id . '/invoice') }}" class="btn btn-sm btn-outline-secondary">Download PDF</a>
                                     </td>
                                 </tr>
                             @endforeach

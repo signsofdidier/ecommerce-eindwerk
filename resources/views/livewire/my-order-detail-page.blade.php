@@ -18,7 +18,12 @@
         };
 
         // Haal de gratis-verzenddrempel op via Settings (ervan uitgaande dat je dit even meepakt in de view)
-        $threshold = \App\Models\Setting::first()->free_shipping_threshold ?? 0;
+        $tenantId = tenant('id');
+        $threshold = cache()->remember("free_shipping_threshold_{$tenantId}", 60, function () {
+            return \App\Models\Setting::first()->free_shipping_threshold ?? 0;
+        });
+
+
     @endphp
 
     <div class="w-100 mt-4">

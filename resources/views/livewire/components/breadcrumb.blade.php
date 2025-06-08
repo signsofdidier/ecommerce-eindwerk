@@ -2,7 +2,7 @@
     <div class="breadcrumb">
         <div class="container">
             <ul class="list-unstyled d-flex align-items-center m-0">
-                <li><a href="{{ url('/') }}">Home</a></li>
+                <li><a href="{{ tenant_url() }}">Home</a></li>
                 @foreach($breadcrumbs as $index => $breadcrumb)
                     <li>
                         <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
@@ -18,12 +18,11 @@
                         @if($index === count($breadcrumbs) - 1)
                             {{ $breadcrumb['name'] }}
                         @else
-                            <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['name'] }}</a>
+                            <a href="{{ tenant_url($breadcrumb['url']) }}">{{ $breadcrumb['name'] }}</a>
                         @endif
                     </li>
                 @endforeach
             </ul>
         </div>
     </div>
-
 </div>

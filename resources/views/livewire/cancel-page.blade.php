@@ -10,12 +10,12 @@
                         Unfortunately your payment could not be processed and your order has been cancelled.
                     </p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ url('/products') }}" class="btn btn-outline-primary">
+                        <a href="{{ tenant_url('products') }}" class="btn btn-outline-primary">
                             Continue Shopping
                         </a>
-                        <a href="{{ url('/contact') }}" class="btn btn-outline-secondary">
+                        {{--<a href="{{ tenant_url('contact') }}" class="btn btn-outline-secondary">
                             Contact Support
-                        </a>
+                        </a>--}}
                     </div>
                 </div>
             </section>

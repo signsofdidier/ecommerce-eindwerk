@@ -70,7 +70,7 @@
                 <td style="padding: 8px;">
                     <div style="display: flex; align-items: center;">
                         <img src="{{ $message->embed(public_path('storage/' . $item->product->images[0])) }}" alt="product" style="width: 40px; height: auto; margin-right: 10px;">
-                        <a href="{{ url('/products/' . $item->product->slug) }}" style="color: #00234D; text-decoration: none;">
+                        <a href="{{ tenant_url('products/' . $item->product->slug) }}" style="color: #00234D; text-decoration: none;">
                             {{ $item->product->name }}
                         </a>
                         @if ($item->color)
@@ -131,7 +131,7 @@
     <p style="margin-top: 20px;">You will be asked to pay the total amount upon delivery.</p>
 
     <p style="margin: 30px 0; text-align: center;">
-        <a href="{{ url('/my-orders') }}" class="btn">View My Orders</a>
+        <a href="{{ tenant_url('my-orders') }}" class="btn">View My Orders</a>
     </p>
 
     <p style="margin-top: 40px;">Kind regards,<br><strong>The E-commerce Team</strong></p>
