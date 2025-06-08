@@ -20,10 +20,13 @@ class DatabaseSeeder extends Seeder
         // 1. COMPANY
         $company1 = Company::first() ?? Company::create([
             'name' => 'Company 1',
+            'slug' => 'company-1', // ✅ verplicht voor URL
         ]);
         $company2 = Company::where('name', 'Company 2')->first() ?? Company::create([
             'name' => 'Company 2',
+            'slug' => 'company-2', // ✅ idem
         ]);
+
 
         // 2. USERS
         $admin = User::create([

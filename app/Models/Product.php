@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\TenantScope;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -53,8 +54,7 @@ class Product extends Model
         return $this->belongsTo(Company::class);
     }
 
-    //"Elke keer dat je een nieuw OrderItem maakt, zorg er automatisch voor dat het gekoppeld is aan de juiste company."
-    //Dit voorkomt dat je vergeet om company_id te vullen en je database foutmeldingen geeft zoals "Field 'company_id' doesn't have a default value".
+    // "Elke keer dat je een nieuw Product maakt, koppel het automatisch aan de juiste company."
     protected static function booted()
     {
         static::creating(function ($product) {
@@ -64,8 +64,6 @@ class Product extends Model
         });
 
         // dit legt de relaties met de tenancy
-        static::addGlobalScope('company', function ($query) {
-            $query->where('company_id', Filament::getTenant()?->id);
-        });
+        static::addGlobalScope(new TenantScope);
     }
 }
