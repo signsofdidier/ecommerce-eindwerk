@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ColorResource\Pages;
 use App\Models\Color;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
@@ -76,5 +77,11 @@ class ColorResource extends Resource
             'create' => Pages\CreateColor::route('/create'),
             'edit' => Pages\EditColor::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('tenant_id', Filament::getTenant()->id);
     }
 }
