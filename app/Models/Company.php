@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Company extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
+        'slug',
     ];
 
     public function users(): BelongsToMany
