@@ -9,11 +9,13 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/vendor.css') }}">--}}
+    <link type="text/css" href="{{ global_asset('assets') }}/css/vendor.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">--}}
+    <link type="text/css" href="{{ global_asset('assets') }}/css/style.css" rel="stylesheet">
 
-    <link href="{{ asset('assets/css/own-style.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('assets/css/own-style.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/banner.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/breadcrumb.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/cart.css') }}" rel="stylesheet">
@@ -25,7 +27,21 @@
     <link href="{{ asset('assets/css/login.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/newsletter.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/promotional-product.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/wishlist.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/wishlist.css') }}" rel="stylesheet">--}}
+
+    <link href="{{ global_asset('assets') }}/css/own-style.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/banner.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/breadcrumb.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/cart.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/checkout.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/common.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/contact.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/faq.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/footer.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/login.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/newsletter.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/promotional-product.css" rel="stylesheet">
+    <link href="{{ global_asset('assets') }}/css/wishlist.css" rel="stylesheet">
 
     {{-- FLUX FONTS --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -228,8 +244,12 @@
     <!-- drawer cart end -->
 
     <!-- all js -->
-    <script src="{{ asset('assets/js/vendor.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    {{--<script src="{{ asset('assets/js/vendor.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>--}}
+    <script src="{{ global_asset('assets') }}/js/vendor.js"></script>
+    <script src="{{ global_asset('assets') }}/js/main.js"></script>
+
+
 
     <!-- Livewire Alert JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
