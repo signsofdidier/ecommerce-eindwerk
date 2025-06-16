@@ -26,7 +26,6 @@ class CheckoutPage extends Component
     public $state;
     public $zip_code;
     public $payment_method;
-    public $discount_code;
 
     public float $sub_total = 0;
     public float $shipping_amount = 0;
@@ -151,12 +150,12 @@ class CheckoutPage extends Component
         $order->user_id = auth()->user()->id;
         $order->sub_total = $this->sub_total;
         $order->grand_total = $this->sub_total + $this->shipping_amount;
-        $order->payment_method = $this->payment_method;
+        $order->payment_method = 'cash on delivery';
         $order->payment_status = $this->payment_method == 'cod' ? 'pending' : 'paid';
         $order->status = 'new';
         $order->currency = 'EUR';
         $order->shipping_amount = $this->shipping_amount;
-        $order->shipping_method = 'Flat Rate';
+        $order->shipping_method = 'Truck Delivery';
         $order->notes = 'Order placed by ' . auth()->user()->name;
         $order->save();
 
