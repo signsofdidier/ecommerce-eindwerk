@@ -26,95 +26,74 @@
                             <div class="shipping-address-form-wrapper">
                                 <form wire:submit.prevent="placeOrder" class="shipping-address-form common-form">
                                     <div class="row">
-                                        {{-- First Name --}}
-                                        <div class="col-lg-6 col-md-12 col-12">
-                                            <fieldset>
-                                                <label for="first_name" class="label">First name</label>
-                                                <input wire:model="first_name" id="first_name" type="text" class="form-control" />
+                                        <div class="col-12">
+                                            <fieldset class="form-check mb-3 d-flex">
+                                                <input type="checkbox" id="sameAsBilling" wire:model="sameAsBilling" class="">
+                                                <label for="sameAsBilling" class="form-check-label">Shipping address is the same as billing address</label>
                                             </fieldset>
-                                            @error('first_name')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
                                         </div>
 
-                                        {{-- Last Name --}}
+                                        {{-- Billing First Name --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="last_name" class="label">Last name</label>
-                                                <input wire:model="last_name" id="last_name" type="text" class="form-control" />
+                                                <label for="billing_first_name" class="label">First name</label>
+                                                <input wire:model="billing_first_name" id="billing_first_name" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('last_name')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_first_name')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
-                                        {{-- Phone --}}
+                                        {{-- Billing Last Name --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="phone" class="label">Phone</label>
-                                                <input wire:model="phone" id="phone" type="text" class="form-control" />
+                                                <label for="billing_last_name" class="label">Last name</label>
+                                                <input wire:model="billing_last_name" id="billing_last_name" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('phone')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_last_name')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
-                                        {{-- Street Address --}}
+                                        {{-- Billing Phone --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="street_address" class="label">Address</label>
-                                                <input wire:model="street_address" id="street_address" type="text" class="form-control" />
+                                                <label for="billing_phone" class="label">Phone</label>
+                                                <input wire:model="billing_phone" id="billing_phone" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('street_address')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_phone')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
-                                        {{-- City --}}
+                                        {{-- Billing Address --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="city" class="label">City</label>
-                                                <input wire:model="city" id="city" type="text" class="form-control" />
+                                                <label for="billing_address" class="label">Address</label>
+                                                <input wire:model="billing_address" id="billing_address" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('city')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_address')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
-                                        {{-- Zip Code --}}
+                                        {{-- Billing City --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="zip_code" class="label">Zip code</label>
-                                                <input wire:model="zip_code" id="zip_code" type="text" class="form-control" />
+                                                <label for="billing_city" class="label">City</label>
+                                                <input wire:model="billing_city" id="billing_city" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('zip_code')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_city')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
-                                        {{-- State --}}
+                                        {{-- Billing Zip Code --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
-                                                <label for="state" class="label">State</label>
-                                                <input wire:model="state" id="state" type="text" class="form-control" />
+                                                <label for="billing_zip_code" class="label">Zip code</label>
+                                                <input wire:model="billing_zip_code" id="billing_zip_code" type="text" class="form-control" />
                                             </fieldset>
-                                            @error('state')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('billing_zip_code')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        {{-- Billing State --}}
+                                        <div class="col-lg-6 col-md-12 col-12">
+                                            <fieldset>
+                                                <label for="billing_state" class="label">State</label>
+                                                <input wire:model="billing_state" id="billing_state" type="text" class="form-control" />
+                                            </fieldset>
+                                            @error('billing_state')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
                                         {{-- Country --}}
@@ -125,7 +104,70 @@
                                             </fieldset>
                                         </div>
 
-                                        {{--  Payment Method --}}
+                                        @if(!$sameAsBilling)
+                                            {{-- Shipping Fields --}}
+                                            <div class="col-12 mt-3">
+                                                <h4 class="mb-3">Shipping Address</h4>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_first_name" class="label">First name</label>
+                                                    <input wire:model="shipping_first_name" id="shipping_first_name" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_first_name')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_last_name" class="label">Last name</label>
+                                                    <input wire:model="shipping_last_name" id="shipping_last_name" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_last_name')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_phone" class="label">Phone</label>
+                                                    <input wire:model="shipping_phone" id="shipping_phone" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_phone')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_address" class="label">Address</label>
+                                                    <input wire:model="shipping_address" id="shipping_address" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_address')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_city" class="label">City</label>
+                                                    <input wire:model="shipping_city" id="shipping_city" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_city')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_zip_code" class="label">Zip code</label>
+                                                    <input wire:model="shipping_zip_code" id="shipping_zip_code" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_zip_code')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label for="shipping_state" class="label">State</label>
+                                                    <input wire:model="shipping_state" id="shipping_state" type="text" class="form-control" />
+                                                </fieldset>
+                                                @error('shipping_state')<div class="text-danger small">{{ $message }}</div>@enderror
+                                            </div>
+                                        @endif
+
+                                        {{-- Payment Method --}}
                                         <div class="col-lg-6 col-md-12 col-12">
                                             <fieldset>
                                                 <label class="label">Payment method</label>
@@ -136,11 +178,7 @@
                                                     <label for="payment-stripe" class="btn btn-outline-secondary flex-fill">BANCONTACT</label>
                                                 </div>
                                             </fieldset>
-                                            @error('payment_method')
-                                            <div class="text-danger small">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
+                                            @error('payment_method')<div class="text-danger small">{{ $message }}</div>@enderror
                                         </div>
 
                                         <div class=" shipping-address-area billing-area mt-4">
@@ -149,10 +187,7 @@
                                                 <button type="submit" class="checkout-page-btn minicart-btn btn-primary">PLACE ORDER</button>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </form>
                             </div>
                         </div>

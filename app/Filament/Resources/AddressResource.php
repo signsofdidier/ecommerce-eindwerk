@@ -6,6 +6,7 @@ use App\Filament\Resources\AddressResource\Pages;
 use App\Filament\Resources\AddressResource\RelationManagers;
 use App\Models\Address;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -32,10 +33,17 @@ class AddressResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('order_id')
-                    ->numeric(),
                 TextInput::make('user_id')
-                    ->numeric(),
+                    ->default(auth()->id())
+                    ->disabled(),
+                Select::make('type')
+                ->required()
+                ->options([
+                    'shipping' => 'Shipping',
+                    'billing' => 'Billing',
+                ]),
+                TextInput::make('label')
+                    ->maxLength(255),
                 TextInput::make('first_name')
                     ->maxLength(255),
                 TextInput::make('last_name')
@@ -61,17 +69,12 @@ class AddressResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('order_id')
-                    ->label('Order')
-                    ->numeric()
-                    ->sortable(),
                 BadgeColumn::make('type')
                     ->label('Type')
                     ->sortable()
-                    ->getStateUsing(fn (Address $record) => $record->order_id ? 'Order' : 'Profile')
                     ->colors([
-                        'success' => 'Profile',
-                        'warning' => 'Order',
+                        'success' => 'shipping',
+                        'warning' => 'billing',
                     ]),
 
                 TextColumn::make('user_id')
@@ -119,15 +122,6 @@ class AddressResource extends Resource
                 SoftDeletingScope::class,
             ]))
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_profile')
-                    ->label('Profile Address')
-                    ->placeholder('All')
-                    ->trueLabel('Only Profile')
-                    ->falseLabel('Only Order')
-                    ->queries(
-                        true: fn (Builder $query) => $query->whereNull('order_id'),
-                        false: fn (Builder $query) => $query->whereNotNull('order_id'),
-                    ),
                 TrashedFilter::make(),
             ])
             ->actions([

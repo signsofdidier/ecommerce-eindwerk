@@ -48,12 +48,34 @@
 
     <p>Hello {{ $order->user->name }},</p>
 
-    <p>Your order <strong>#{{ $order->id }}</strong> has been placed successfully with <strong>Cash on Delivery</strong>.</p>
+    <p>Your order <strong>{{ '#ORD-' . str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</strong> has been placed successfully with <strong>Cash on Delivery</strong>.</p>
 
     <p>
         <strong>Total:</strong> {{ Number::currency($order->grand_total, 'EUR') }}<br>
         <strong>Payment method:</strong> Cash on Delivery
     </p>
+
+    <h3>Shipping Address</h3>
+    <p>
+        {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}<br>
+        {{ $order->shipping_address }}<br>
+        {{ $order->shipping_zip_code }} {{ $order->shipping_city }}<br>
+        {{ $order->shipping_state }}<br>
+        {{ $order->shipping_email }}<br>
+        {{ $order->shipping_phone }}
+    </p>
+
+    <h3>Billing Address</h3>
+    <p>
+        {{ $order->billing_first_name }} {{ $order->billing_last_name }}<br>
+        {{ $order->billing_address }}<br>
+        {{ $order->billing_zip_code }} {{ $order->billing_city }}<br>
+        {{ $order->billing_state }}<br>
+        {{ $order->billing_email }}<br>
+        {{ $order->billing_phone }}
+    </p>
+
+
 
     <h3>Order Summary</h3>
     <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">

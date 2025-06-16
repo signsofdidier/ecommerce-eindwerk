@@ -25,12 +25,31 @@ return new class extends Migration
             $table->text('notes')->nullable();
 
             $table->decimal('sub_total', 10, 2)
-                ->before('grand_total')
                 ->default(0);
             $table->decimal('tax_amount', 10, 2)
                 ->default(0);
             $table->decimal('discount_amount', 10, 2)
                 ->default(0);
+
+            // Billing addresses
+            $table->string('billing_first_name')->nullable();
+            $table->string('billing_last_name')->nullable();
+            $table->string('billing_email')->nullable();
+            $table->string('billing_phone')->nullable();
+            $table->text('billing_address')->nullable();
+            $table->string('billing_city')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('billing_zip_code')->nullable();
+
+            // Shipping addresses
+            $table->string('shipping_first_name')->nullable();
+            $table->string('shipping_last_name')->nullable();
+            $table->string('shipping_email')->nullable();
+            $table->string('shipping_phone')->nullable();
+            $table->text('shipping_address')->nullable();
+            $table->string('shipping_city')->nullable();
+            $table->string('shipping_state')->nullable();
+            $table->string('shipping_zip_code')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

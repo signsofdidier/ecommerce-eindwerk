@@ -4,10 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Filament\Resources\OrderResource\RelationManagers\AddressRelationManager;
 use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
@@ -117,6 +117,37 @@ class OrderResource extends Resource
                             ->columnSpanFull(),
 
                     ])->columns(2),
+
+                    // Billing address
+                    Section::make('Billing Address')
+                        ->schema([
+                            Grid::make(2)->schema([
+                                TextInput::make('billing_first_name')->required(),
+                                TextInput::make('billing_last_name')->required(),
+                                TextInput::make('billing_email')->email()->required(),
+                                TextInput::make('billing_phone')->tel()->required(),
+                                TextInput::make('billing_address')->required(),
+                                TextInput::make('billing_city')->required(),
+                                TextInput::make('billing_state')->required(),
+                                TextInput::make('billing_zip_code')->required(),
+                            ])
+                        ]),
+
+                    // Shipping address
+                    Section::make('Shipping Address')
+                        ->schema([
+                            Grid::make(2)->schema([
+                                TextInput::make('shipping_first_name')->required(),
+                                TextInput::make('shipping_last_name')->required(),
+                                TextInput::make('shipping_email')->email()->required(),
+                                TextInput::make('shipping_phone')->tel()->required(),
+                                TextInput::make('shipping_address')->required(),
+                                TextInput::make('shipping_city')->required(),
+                                TextInput::make('shipping_state')->required(),
+                                TextInput::make('shipping_zip_code')->required(),
+                            ])
+                        ]),
+
 
                     Section::make('Order Items')->schema([
                         Repeater::make('items')
@@ -296,8 +327,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-
-            AddressRelationManager::class
+            //
         ];
     }
 

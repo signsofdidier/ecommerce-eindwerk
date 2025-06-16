@@ -103,7 +103,7 @@
 
 <div class="header">
     <img src="{{ public_path('assets/img/logo-white.png') }}" alt="Shop Logo">
-    <h1>Order Confirmation #{{ $order->id }}</h1>
+    <h1>Order Confirmation {{ '#ORD-' . str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</h1>
     <p>Payment Method: <strong>Bancontact</strong></p>
 </div>
 
@@ -113,6 +113,26 @@
         <p><strong>Email:</strong> {{ $order->user->email }}</p>
         <p><strong>Order Date:</strong> {{ $order->created_at->format('d/m/Y') }}</p>
     </div>
+
+    <h3>Shipping Address</h3>
+    <p>
+        {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}<br>
+        {{ $order->shipping_address }}<br>
+        {{ $order->shipping_zip_code }} {{ $order->shipping_city }}<br>
+        {{ $order->shipping_state }}<br>
+        {{ $order->shipping_email }}<br>
+        {{ $order->shipping_phone }}
+    </p>
+
+    <h3>Billing Address</h3>
+    <p>
+        {{ $order->billing_first_name }} {{ $order->billing_last_name }}<br>
+        {{ $order->billing_address }}<br>
+        {{ $order->billing_zip_code }} {{ $order->billing_city }}<br>
+        {{ $order->billing_state }}<br>
+        {{ $order->billing_email }}<br>
+        {{ $order->billing_phone }}
+    </p>
 
     <table>
         <thead class="table-header">

@@ -40,7 +40,10 @@
                             <i class="fas fa-user fa-2x text-secondary me-3"></i>
                             <div>
                                 <p class="text-uppercase text-muted mb-1">Customer</p>
-                                <h5 class="mb-0">{{ $address->full_name }}</h5>
+                                <h5 class="mb-0">
+                                    {{ $order->billing_first_name }}
+                                    {{ $order->billing_last_name }}
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -130,17 +133,31 @@
                         </div>
                     </div>
 
-                    <!-- Shipping Address -->
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white border-0">
-                            <h5 class="mb-0">Shipping Address</h5>
-                        </div>
+                    {{-- Billing Address --}}
+                    <div class="card border bg-light mb-4">
                         <div class="card-body">
-                            <p class="mb-1">{{ $address->street_address }}</p>
-                            <p class="mb-1">{{ $address->city }}, {{ $address->state }} {{ $address->zip_code }}</p>
-                            <p class="mb-0">Phone: {{ $address->phone }}</p>
+                            <h5 class="card-title fw-semibold mb-3">Billing Address</h5>
+                            <p class="mb-1">{{ $order->billing_first_name }} {{ $order->billing_last_name }}</p>
+                            <p class="mb-1">{{ $order->billing_address }}</p>
+                            <p class="mb-1">{{ $order->billing_city }}, {{ $order->billing_state }} {{ $order->billing_zip_code }}</p>
+                            <p class="mb-0">Phone: {{ $order->billing_phone }}</p>
+                            <p class="mb-0">Email: {{ $order->billing_email }}</p>
                         </div>
                     </div>
+
+                    {{-- Shipping Address --}}
+                    <div class="card border bg-light mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold mb-3">Shipping Address</h5>
+                            <p class="mb-1">{{ $order->shipping_first_name }} {{ $order->shipping_last_name }}</p>
+                            <p class="mb-1">{{ $order->shipping_address }}</p>
+                            <p class="mb-1">{{ $order->shipping_city }}, {{ $order->shipping_state }} {{ $order->shipping_zip_code }}</p>
+                            <p class="mb-0">Phone: {{ $order->shipping_phone }}</p>
+                            <p class="mb-0">Email: {{ $order->billing_email }}</p>
+                        </div>
+                    </div>
+
+
                 </div>
 
                 <div class="col-12 col-lg-4">

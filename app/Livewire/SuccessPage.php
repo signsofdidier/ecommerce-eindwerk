@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Helpers\CartManagement;
-use App\Models\Address;
 use App\Models\Order;
 use App\Models\ProductColorStock;
 use Livewire\Attributes\Title;
@@ -32,10 +31,10 @@ class SuccessPage extends Component
             $order = $this->handleStripeSuccess();
         } else {
             // Voor COD orders, haal de laatste order op
-            $order = Order::with('address', 'user')
-                ->where('user_id', auth()->user()->id)
+            $order = Order::with('user')
+                ->where('user_id', auth()->id())
                 ->latest()
-                ->first();
+                ->firstOrFail();
         }
 
         return view('livewire.success-page', [
@@ -49,7 +48,7 @@ class SuccessPage extends Component
         $pending_order_data = session()->get('pending_order_data');
         if (!$pending_order_data) {
             // Geen pending data, probeer laatste order op te halen
-            return Order::with('address', 'user')
+            return Order::with('user')
                 ->where('user_id', auth()->user()->id)
                 ->latest()
                 ->first();
@@ -77,7 +76,8 @@ class SuccessPage extends Component
     private function createOrderFromPendingData($pending_order_data, $session_info)
     {
         $cart_items = $pending_order_data['cart_items'];
-        $address_data = $pending_order_data['address_data'];
+        $billing = $pending_order_data['billing'];
+        $shipping = $pending_order_data['shipping'];
 
         // Maak het order aan
         $order = new Order();
@@ -92,27 +92,26 @@ class SuccessPage extends Component
         $order->shipping_method = 'Truck Delivery';
         $order->notes = 'Order placed by ' . auth()->user()->name;
         $order->transaction_id = $session_info->payment_intent;
+
+        $order->billing_first_name = $billing['first_name'];
+        $order->billing_last_name = $billing['last_name'];
+        $order->billing_email = $billing['email'];
+        $order->billing_phone = $billing['phone'];
+        $order->billing_address = $billing['address'];
+        $order->billing_city = $billing['city'];
+        $order->billing_state = $billing['state'];
+        $order->billing_zip_code = $billing['zip_code'];
+
+        $order->shipping_first_name = $shipping['first_name'];
+        $order->shipping_last_name = $shipping['last_name'];
+        $order->shipping_email = $shipping['email'];
+        $order->shipping_phone = $shipping['phone'];
+        $order->shipping_address = $shipping['address'];
+        $order->shipping_city = $shipping['city'];
+        $order->shipping_state = $shipping['state'];
+        $order->shipping_zip_code = $shipping['zip_code'];
+
         $order->save();
-
-        // Maak het adres aan
-        $address = new Address();
-        $address->order_id = $order->id;
-        $address->user_id = auth()->user()->id;
-        $address->first_name = $address_data['first_name'];
-        $address->last_name = $address_data['last_name'];
-        $address->phone = $address_data['phone'];
-        $address->street_address = $address_data['street_address'];
-        $address->city = $address_data['city'];
-        $address->state = $address_data['state'];
-        $address->zip_code = $address_data['zip_code'];
-        $address->save();
-
-        // Sla als profieladres op
-        $user = auth()->user();
-        if (!$user->address) {
-            $user->address()->associate($address);
-            $user->save();
-        }
 
         // Sla order items op
         $order->items()->createMany($cart_items);
@@ -135,6 +134,6 @@ class SuccessPage extends Component
         Mail::to($order->user->email)->send(new InvoicePaidMail($order));
 
         // Herlaad order met relaties voor de view
-        return Order::with('address', 'user')->find($order->id);
+        return Order::with('user')->find($order->id);
     }
 }

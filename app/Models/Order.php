@@ -12,9 +12,10 @@ class Order extends Model
 
 
     protected $fillable = [
+        'transaction_id',
         'user_id',
-        'sub_total',
         'grand_total',
+        'sub_total',
         'tax_amount',
         'discount_amount',
         'payment_method',
@@ -24,6 +25,26 @@ class Order extends Model
         'shipping_amount',
         'shipping_method',
         'notes',
+
+        // Billing address
+        'billing_first_name',
+        'billing_last_name',
+        'billing_email',
+        'billing_phone',
+        'billing_address',
+        'billing_city',
+        'billing_state',
+        'billing_zip_code',
+
+        // Shipping address
+        'shipping_first_name',
+        'shipping_last_name',
+        'shipping_email',
+        'shipping_phone',
+        'shipping_address',
+        'shipping_city',
+        'shipping_state',
+        'shipping_zip_code',
     ];
 
     protected $dates = ['deleted_at'];
@@ -37,7 +58,4 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function address(){
-        return $this->hasOne(Address::class);
-    }
 }
