@@ -37,7 +37,6 @@ class CheckoutPage extends Component
         if(count($cart_items) == 0){
             return redirect('/products');
         }
-
         $this->sameAsBilling = true;
 
         $setting = Setting::first();

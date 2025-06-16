@@ -76,10 +76,9 @@ class ProfileForm extends Component
             $user->profile_photo_path = $path;
         }
 
-
         $user->save();
 
-        $user->address()->updateOrCreate([],[
+        $user->address()->updateOrCreate([],[  // Lege array voor where-clausule om te updaten of aan te maken
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'phone' => $this->phone,
