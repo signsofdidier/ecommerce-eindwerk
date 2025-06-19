@@ -46,7 +46,7 @@ cd furni
 ```bash
 composer install  
 npm install  
-npm run dev
+composer run dev
 ```
 
 ### 3. .env bestand instellen
