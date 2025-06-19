@@ -143,7 +143,7 @@ Zorg dat `STRIPE_KEY` en `STRIPE_SECRET` correct ingevuld zijn in `.env`.
 ## ℹ️ Opmerkingen
 
 - Mail-functionaliteit werkt alleen als Mailpit draait of je een andere SMTP-provider hebt ingesteld.  
-- Herstart composer run dev na wijzigingen in `.env`.  
+- Herstart `composer run dev` na wijzigingen in `.env`.  
 - Voer `php artisan config:clear` uit bij cachingproblemen.
 
 ---
