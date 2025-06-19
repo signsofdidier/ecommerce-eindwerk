@@ -1,4 +1,4 @@
-# 🛋️ Furni – E-commerce Eindproject
+# 🛋️ Furni – E-commerce Eindproject - Didier Vanassche
 
 Dit is het eindwerk voor het vak Webontwikkeling: een volledige Laravel-gebaseerde e-commerce webshop met Stripe-integratie, gebruikersauthenticatie, beheerderspaneel en productbeheer.
 
