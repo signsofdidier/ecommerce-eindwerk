@@ -38,16 +38,17 @@ Zorg dat volgende tools geïnstalleerd zijn:
    cd furni
 
 2. **Dependencies installeren**
-
+   ```bash
 composer install
 npm install && npm run dev
 
 3. **.env bestand instellen**
-
 Kopieer het .env.example bestand naar .env:
+   ```bash
 cp .env.example .env
 
 Vul daarna onderstaande gegevens aan in .env:
+   ```bash
 APP_NAME="Furni"
 APP_ENV=local
 APP_KEY= # ← wordt gegenereerd in de volgende stap
@@ -79,15 +80,19 @@ MAIL_FROM_NAME="Furni Ture"
 ✅ Tip: Gebruik Mailpit om lokaal e-mails te bekijken.
 
 4. **Applicatiesleutel genereren**
+   ```bash
 php artisan key:generate
 
 5. **Database migreren + seeden**
+   ```bash
 php artisan migrate:fresh --seed
 
 6. **Start de server**
+   ```bash
 composer run dev
 
 7. **Admin login**
+   ```bash
 E-mail: admin@gmail.com
 Wachtwoord: password
 
