@@ -1,6 +1,6 @@
 # 🛋️ Furni – E-commerce Eindproject
 
-Dit is mijn eindwerk voor de opleiding Fullstack Developer: een volledige Laravel-gebaseerde e-commerce webshop met Stripe-integratie, gebruikersauthenticatie, beheerderspaneel en productbeheer en veel meer. De applicatie maakt ook gebruik van een AI-integratie via **Groq API**.
+Dit is het eindwerk voor het vak Webontwikkeling: een volledige Laravel-gebaseerde e-commerce webshop met Stripe-integratie, gebruikersauthenticatie, beheerderspaneel en productbeheer.
 
 ## ✅ Features
 
@@ -8,9 +8,10 @@ Dit is mijn eindwerk voor de opleiding Fullstack Developer: een volledige Larave
 - Winkelwagen en afrekenen
 - Stripe-betalingen (testmodus)
 - Gebruikersregistratie & login
-- Adminpaneel met productbeheer
+- Adminpaneel met productbeheer en veel meer
 - E-mailmeldingen (via Mailpit of lokaal)
-- **AI-functionaliteit via Groq API**
+- Ai integratie met Groq
+- Veel meer coole features om te ontdekken!
 
 ---
 
@@ -18,34 +19,33 @@ Dit is mijn eindwerk voor de opleiding Fullstack Developer: een volledige Larave
 
 Zorg dat volgende tools geïnstalleerd zijn:
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 - Node.js en NPM
 - MySQL
 - Laravel CLI (`composer global require laravel/installer`)
-- Stripe testaccount ([stripe.com](https://stripe.com))
-- Groq API key ([groq.com](https://console.groq.com/))
+- Stripe testaccount (gratis via [https://stripe.com](https://stripe.com))
+- Groq account
+- Mailpit
 
 ---
 
 ## 🚀 Installatie-instructies
 
 1. **Repository klonen**
+   ```bash
    git clone https://github.com/<jouw-gebruikersnaam>/furni.git
    cd furni
-Dependencies installeren
 
+1. **Dependencies installeren**
 composer install
 npm install && npm run dev
-.env bestand instellen
 
+1. **.env bestand instellen**
 Kopieer het .env.example bestand naar .env:
-
 cp .env.example .env
+
 Vul daarna onderstaande gegevens aan in .env:
-
-env
-
 APP_NAME="Furni"
 APP_ENV=local
 APP_KEY= # ← wordt gegenereerd in de volgende stap
@@ -55,15 +55,16 @@ APP_URL=http://127.0.0.1:8000
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=ecommerce_eindwerk
+DB_DATABASE= # ← vul hier je gewenste database in
 DB_USERNAME=root
 DB_PASSWORD=
 
-STRIPE_KEY=pk_test_...
-STRIPE_SECRET=sk_test_...
+STRIPE_KEY=pk_test_... # ← Vul hier je stripe key in
+STRIPE_SECRET=sk_test_... # ← Vul hier je stripe key in
 
-GROQ_API_KEY=gsk_...
+GROQ_API_KEY=gsk_... # ← Vul hier je groq key in
 
+# ← Mailpit gegevens
 MAIL_MAILER=smtp
 MAIL_HOST=127.0.0.1
 MAIL_PORT=1025
@@ -72,64 +73,31 @@ MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 MAIL_FROM_ADDRESS=test@local.dev
 MAIL_FROM_NAME="Furni Ture"
-Applicatiesleutel genereren
 
+✅ Tip: Gebruik Mailpit om lokaal e-mails te bekijken.
+
+1. **Applicatiesleutel genereren**
 php artisan key:generate
-Database migreren + seeden
 
-php artisan migrate --seed
-Server starten
+1. **Database migreren + seeden**
+php artisan migrate:fresh --seed
 
-php artisan serve
-(Optioneel) Admin login
+1. **Start de server**
+composer run dev
 
-E-mail: admin@example.com
-
+2. **Admin login**
+E-mail: admin@gmail.com
 Wachtwoord: password
+
+Voor andere rollen kan je de login email addressen terugvinden bij roles (het passwoord is altijd 'password'
 
 💳 Stripe Testgegevens
 Gebruik onderstaande kaartgegevens bij het testen van betalingen:
-
 Kaartnummer: 4242 4242 4242 4242
-
-Vervaldatum: toekomstig
-
+Vervaldatum: eender welke datum in de toekomst
 CVC: 3 cijfers
-
-Postcode: willekeurig
-
-🧠 Groq AI-integratie
-De applicatie gebruikt Groq voor AI-functionaliteit. Je hebt een geldige Groq API key nodig.
-
-Maak een account aan via https://console.groq.com
-
-Kopieer je key en plak in .env:
-
-GROQ_API_KEY=gsk_...
-Herstart Laravel server na wijzigen van .env.
-
-📁 Projectstructuur
-app/Http/Controllers/ – Controllers voor producten, winkelwagen, betalingen etc.
-
-routes/web.php – Webroutes
-
-resources/views/ – Blade templates
-
-database/seeders/ – Seeders voor testdata
-
-public/ – Frontend assets (JS, CSS)
-
-📬 Mailfunctionaliteit
-De e-mails worden lokaal verstuurd via Mailpit (localhost:1025). Je kan dit aanpassen naar Gmail of Mailtrap indien nodig.
-
-Start Mailpit met:
-
-mailpit
-Ga naar http://localhost:8025 om verzonden e-mails te bekijken.
+ZIP/postcode: eender welke
+Controleer dat STRIPE_KEY en STRIPE_SECRET correct ingevuld zijn in .env.
 
 ℹ️ Opmerkingen
-Vergeet niet npm run dev uit te voeren bij wijzigingen aan JS of CSS.
-
-Controleer dat je database bestaat voor je php artisan migrate uitvoert.
-
-Gebruik php artisan config:clear na aanpassingen in .env.
+Mail-functionaliteit werkt enkel als je een SMTP-server zoals Mailpit lokaal hebt draaien of een andere mail functionaliteit gebruikt in de ENV.
