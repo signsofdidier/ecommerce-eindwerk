@@ -37,11 +37,13 @@ Zorg dat volgende tools geïnstalleerd zijn:
    git clone https://github.com/<jouw-gebruikersnaam>/furni.git
    cd furni
 
-1. **Dependencies installeren**
+2. **Dependencies installeren**
+
 composer install
 npm install && npm run dev
 
-1. **.env bestand instellen**
+3. **.env bestand instellen**
+
 Kopieer het .env.example bestand naar .env:
 cp .env.example .env
 
@@ -76,16 +78,16 @@ MAIL_FROM_NAME="Furni Ture"
 
 ✅ Tip: Gebruik Mailpit om lokaal e-mails te bekijken.
 
-1. **Applicatiesleutel genereren**
+4. **Applicatiesleutel genereren**
 php artisan key:generate
 
-1. **Database migreren + seeden**
+5. **Database migreren + seeden**
 php artisan migrate:fresh --seed
 
-1. **Start de server**
+6. **Start de server**
 composer run dev
 
-2. **Admin login**
+7. **Admin login**
 E-mail: admin@gmail.com
 Wachtwoord: password
 
