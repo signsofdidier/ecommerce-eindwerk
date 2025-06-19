@@ -1,122 +1,149 @@
 # 🛋️ Furni – E-commerce Eindproject
 
-![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![Stripe](https://img.shields.io/badge/Stripe-008CDD?style=for-the-badge&logo=stripe&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+Dit is het eindwerk voor het vak Webontwikkeling: een volledige Laravel-gebaseerde e-commerce webshop met Stripe-integratie, gebruikersauthenticatie, beheerderspaneel en productbeheer.
 
-Een volledige e-commerce webshop gebouwd met Laravel, inclusief Stripe-integratie, gebruikersauthenticatie, beheerderspaneel en AI-integratie met Groq.
+---
 
-## ✨ Hoofdfuncties
+## ✅ Features
 
-### 🛍️ Winkelfunctionaliteiten
-- Productcatalogus met categorieën
-- Productdetailpagina's
-- Winkelwagen management
-- Afrekenproces met Stripe-integratie
+- Producten browsen en detailpagina’s  
+- Winkelwagen en afrekenen  
+- Stripe-betalingen (testmodus)  
+- Gebruikersregistratie & login  
+- Adminpaneel met productbeheer  
+- E-mailmeldingen (via Mailpit of lokaal)  
+- AI-integratie met Groq  
+- Veel meer coole features om te ontdekken!
 
-### 👤 Gebruikersbeheer
-- Registratie en authenticatie
-- Profielbeheer
-- Bestelgeschiedenis
+---
 
-### 🛠️ Admin Dashboard
-- Productbeheer (CRUD)
-- Orderbeheer
-- Gebruikersbeheer
-- Dashboard met verkoopstatistieken
+## ⚙️ Vereisten
 
-### 🤖 Geavanceerde Features
-- AI productaanbevelingen via Groq
-- E-mailmeldingen (orderbevestigingen)
-- Responsief design voor alle devices
+Zorg dat volgende tools geïnstalleerd zijn:
 
-## 🛠️ Installatie
+- PHP >= 8.2  
+- Composer  
+- Node.js en NPM  
+- MySQL  
+- Laravel CLI  
+- Stripe testaccount ([https://stripe.com](https://stripe.com))  
+- Groq account ([https://console.groq.com](https://console.groq.com))  
+- Mailpit ([https://github.com/axllent/mailpit](https://github.com/axllent/mailpit))
 
-### Vereisten
-- PHP ≥ 8.2
-- Composer
-- Node.js ≥ 16 + npm
-- MySQL ≥ 5.7
-- Stripe testaccount ([aanmaken](https://stripe.com))
-- Groq API key ([aanvragen](https://groq.com))
-- Mailpit (voor lokale e-mailtesting)
+---
 
-### Stap 1: Project setup
+## 🚀 Installatie-instructies
+
+### 1. Repository klonen
+
 ```bash
-git clone https://github.com/<jouw-gebruikersnaam>/furni.git
+git clone https://github.com/<jouw-gebruikersnaam>/furni.git  
 cd furni
-composer install
-npm install && npm run dev
-Stap 2: Omgeving configureren
-Kopieer het .env.example bestand:
+```
 
-bash
+### 2. Dependencies installeren
+
+```bash
+composer install  
+npm install  
+npm run dev
+```
+
+### 3. .env bestand instellen
+
+```bash
 cp .env.example .env
-Pas de volgende variabelen aan in .env:
+```
 
-ini
+### 4. .env configureren
+
+Pas het `.env` bestand aan zoals hieronder:
+
+```env
 APP_NAME="Furni"
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
 APP_URL=http://127.0.0.1:8000
 
-# Database configuratie
-DB_DATABASE=furni
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ecommerce_eindwerk
 DB_USERNAME=root
 DB_PASSWORD=
 
-# Stripe configuratie
 STRIPE_KEY=pk_test_...
 STRIPE_SECRET=sk_test_...
 
-# Groq AI
 GROQ_API_KEY=gsk_...
 
-# Mail configuratie (Mailpit)
 MAIL_MAILER=smtp
 MAIL_HOST=127.0.0.1
 MAIL_PORT=1025
-Genereer een applicatiesleutel:
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@local.dev
+MAIL_FROM_NAME="Furni Ture"
+```
 
-bash
+✅ **Tip:** Gebruik Mailpit via `http://localhost:8025` om lokaal e-mails te testen.
+
+---
+
+### 5. Applicatiesleutel genereren
+
+```bash
 php artisan key:generate
-Stap 3: Database initialiseren
-bash
+```
+
+### 6. Database migreren + seeden
+
+```bash
 php artisan migrate:fresh --seed
-Stap 4: Applicatie starten
-bash
+```
+
+### 7. Server starten
+
+```bash
+php artisan serve
+```
+
+Of start dev script:
+
+```bash
 composer run dev
-🔐 Testaccounts
-Rol	E-mail	Wachtwoord
-Administrator	admin@gmail.com	password
-Gebruiker	user@gmail.com	password
-Alle testaccounts gebruiken "password" als wachtwoord
+```
 
-💳 Stripe Testgegevens
-Gebruik deze kaartgegevens voor testbetalingen:
+---
 
-Kaartnummer: 4242 4242 4242 4242
+## 🔐 Admin login
 
-Vervaldatum: Elke toekomstige datum
+- E-mail: `admin@gmail.com`  
+- Wachtwoord: `password`
 
-CVC: Drie willekeurige cijfers
+Voor andere rollen: controleer de gebruikers in de database. Alle wachtwoorden zijn `password`.
 
-Postcode: Willekeurig
+---
 
-📧 E-mail Testing
-We raden Mailpit aan voor lokale e-mailtesting:
+## 💳 Stripe testgegevens
 
-bash
-# Installeer Mailpit (macOS met Homebrew)
-brew install mailpit
-brew services start mailpit
-Open dan http://localhost:8025 om e-mails te bekijken.
+Gebruik deze testgegevens bij afrekenen:
 
-🤖 AI Integratie
-Het systeem gebruikt Groq voor:
+- Kaartnummer: `4242 4242 4242 4242`  
+- Vervaldatum: toekomstige datum  
+- CVC: 3 cijfers  
+- Postcode: willekeurig  
 
-Productaanbevelingen
+Zorg dat `STRIPE_KEY` en `STRIPE_SECRET` correct ingevuld zijn in `.env`.
 
-Klantenservice chatbots
+---
 
-Slimme zoekfunctionaliteit
+## ℹ️ Opmerkingen
 
-Zorg dat je GROQ_API_KEY correct is ingesteld in je .env bestand.
+- Mail-functionaliteit werkt alleen als Mailpit draait of je een andere SMTP-provider hebt ingesteld.  
+- Herstart composer run dev na wijzigingen in `.env`.  
+- Voer `php artisan config:clear` uit bij cachingproblemen.
+
+---
