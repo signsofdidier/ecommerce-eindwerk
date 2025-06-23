@@ -98,13 +98,19 @@ MAIL_FROM_NAME="Furni Ture"
 php artisan key:generate
 ```
 
-### 6. Database migreren + seeden
+### 6. Simlink maken
+
+```bash
+php artisan storage:link
+```
+
+### 7. Database migreren + seeden
 
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-### 7. Server starten
+### 8. Server starten
 
 ```bash
 composer run dev
